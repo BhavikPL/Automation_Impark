@@ -429,4 +429,68 @@ public class SearchPageSteps extends Base
 	{
 		CurrentPage.getInstance(SearchPage.class).enterCardDetails();
 	}
+	
+	@Then("verify that Original fine amount is same as {string} citation fine")
+	public void verify_that_original_fine_amount_is_same_as_citation_fine(String key) throws IOException
+	{
+		String expectedFine = PropertyUtil.getFromTempPropertyFile(Path.dataProperty, key);
+		CurrentPage.getInstance(SearchPage.class).verifyOriginalFineAmount(expectedFine);
+	}
+	
+	@Then("verify that New Fine Amount Due is same as {string} citation fine")
+	public void verify_that_new_fine_amount_due_is_same_as_citation_fine(String key) throws IOException
+	{
+		String expectedFine = PropertyUtil.getFromTempPropertyFile(Path.dataProperty, key);
+		CurrentPage.getInstance(SearchPage.class).verifyNewFineAmountDue(expectedFine);
+	}
+	
+	@When("user click on submit button of Add Discount popup")
+	public void user_click_on_submit_button_of_add_discount_popup()
+	{
+		CurrentPage.getInstance(SearchPage.class).clickSubmitButtonOfAddDiscountPopup();
+	}
+	
+	@Then("verify that {string} message display as mandatory filed for add discount popup")
+	public void verify_that_message_display_as_mandatory_field_for_add_discount_popup(String expectedMessage)
+	{
+		CurrentPage.getInstance(SearchPage.class).verifyMandatoryFieldMessage(expectedMessage);
+	}
+	
+	@When("user entered {string} as discount in the Discount Amount field from add discount popup")
+	public void user_entered_as_discount_in_the_discount_amount_field_from_add_discount_popup(String discountAmount)
+	{
+		CurrentPage.getInstance(SearchPage.class).enterDiscountAmount(discountAmount);
+	}
+	
+	@When("user entered {string} as Discount Days from add discount popup")
+	public void user_entered_as_discount_days_from_add_discount_popup(String discountDays)
+	{
+		CurrentPage.getInstance(SearchPage.class).enterDiscountDays(discountDays);
+	}
+	
+	@Then("verify that Discount End Date is populating the {string} days of future with respect to current date")
+	public void verify_that_discount_end_date_is_populating_the_days_of_future_with_respect_to_current_date(String days)
+	{
+		CurrentPage.getInstance(SearchPage.class).verifyDiscountEndDate(days);
+	}
+	
+	@Then("verify that New Fine Amount Due is the {string} minus {string} as discounted amount and save its value as {string} into temp file")
+	public void verify_that_new_fine_amount_due_is_the_minus_as_discounted_amount_and_save_its_value_as_into_temp_file(String originalFine, String discountAmount, String key) throws IOException
+	{
+		String expectedOriginalFine = PropertyUtil.getFromTempPropertyFile(Path.dataProperty, originalFine);
+		String discountedAmount = CurrentPage.getInstance(SearchPage.class).verifyDiscountedAmountAndGetValue(expectedOriginalFine, discountAmount);
+		PropertyUtil.updateIntoProperty(Path.dataProperty, key, discountedAmount);
+	}
+	
+	@When("user entered the remark from add discount popup")
+	public void user_entered_the_remark_from_add_discount_popup()
+	{
+		CurrentPage.getInstance(SearchPage.class).enterRemark();
+	}
+	
+	@When("click on to the Submit button from add discount popup")
+	public void click_on_to_the_submit_button_from_add_discount_popup()
+	{
+		CurrentPage.getInstance(SearchPage.class).clickSubmitButtonFromAddDiscountPopup();
+	}
 }

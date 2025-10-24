@@ -150,6 +150,28 @@ public class SearchPage extends BasePage
 	@FindBy(how=How.XPATH, using="//input[@name='cvc']")
 	public WebElement cvvextbox;
 	
+	// Add Discount popup elements
+	@FindBy(how=How.XPATH, using="//input[@name='fine']")
+	public WebElement originalFineAmountInput;
+	
+	@FindBy(how=How.XPATH, using="//input[@name='currentAmountDue']")
+	public WebElement currentAmountDueInput;
+	
+	@FindBy(how=How.XPATH, using="//input[@name='discountAmount']")
+	public WebElement discountAmountInput;
+	
+	@FindBy(how=How.XPATH, using="//input[@name='discount_days']")
+	public WebElement discountDaysInput;
+	
+	@FindBy(how=How.XPATH, using="//input[@name='newDueAmount']")
+	public WebElement newFineAmountDueInput;
+	
+	@FindBy(how=How.XPATH, using="//textarea[@name='remark']")
+	public WebElement remarkTextarea;
+	
+	@FindBy(how=How.XPATH, using="//button[@type='submit']")
+	public WebElement submitButton;
+	
 	// Login methods
 	private void enterUserName()
 	{
@@ -892,5 +914,92 @@ public class SearchPage extends BasePage
 			WebElement e = driverUtilities.get().getWebElement(closeXPath);
 			driverUtilities.get().clickOnElement(e);
 		}
+	}
+	
+	// Add Discount popup methods
+	public void verifyOriginalFineAmount(String expectedFine)
+	{
+		String actualFine = driverUtilities.get().getAttribute(originalFineAmountInput, "value");
+		Assert.assertTrue("Original fine amount mismatch. Expected: " + expectedFine + ", Actual: " + actualFine, 
+			actualFine.contains(expectedFine.replaceAll("[^\\d.]", "")));
+	}
+	
+	public void verifyNewFineAmountDue(String expectedFine)
+	{
+		String actualFine = driverUtilities.get().getAttribute(newFineAmountDueInput, "value");
+		Assert.assertTrue("New fine amount due mismatch. Expected: " + expectedFine + ", Actual: " + actualFine, 
+			actualFine.contains(expectedFine.replaceAll("[^\\d.]", "")));
+	}
+	
+	public void clickSubmitButtonOfAddDiscountPopup()
+	{
+		driverUtilities.get().clickOnElement(submitButton);
+	}
+	
+	public void verifyMandatoryFieldMessage(String expectedMessage)
+	{
+		WebElement messageElement = driverUtilities.get().getWebElement("//*[contains(text(),'" + expectedMessage + "')]");
+		Assert.assertTrue("Mandatory field message not displayed: " + expectedMessage, 
+			driverUtilities.get().isElementDisplayed(messageElement));
+	}
+	
+	public void enterDiscountAmount(String discountAmount)
+	{
+		driverUtilities.get().clearTextBox(discountAmountInput);
+		driverUtilities.get().typeIntoTextBox(discountAmountInput, discountAmount);
+	}
+	
+	public void enterDiscountDays(String discountDays)
+	{
+		driverUtilities.get().clearTextBox(discountDaysInput);
+		driverUtilities.get().typeIntoTextBox(discountDaysInput, discountDays);
+	}
+	
+	public void verifyDiscountEndDate(String days)
+	{
+		String expectedDate = Util.getFutureDate(Integer.parseInt(days));
+		WebElement discountEndDateInput = driverUtilities.get().getWebElement("//input[@placeholder='MM/DD/YYYY']");
+		String actualDate = driverUtilities.get().getAttribute(discountEndDateInput, "value");
+		Assert.assertTrue("Discount end date mismatch. Expected: " + expectedDate + ", Actual: " + actualDate, 
+			actualDate.contains(expectedDate));
+	}
+	
+	public void verifyDiscountedAmount(String originalFine, String discountAmount)
+	{
+		double originalFineValue = Double.parseDouble(originalFine.replaceAll("[^\\d.]", ""));
+		double discountAmountValue = Double.parseDouble(discountAmount);
+		double expectedDiscountedAmount = originalFineValue - discountAmountValue;
+		
+		String actualDiscountedAmount = driverUtilities.get().getAttribute(newFineAmountDueInput, "value");
+		double actualValue = Double.parseDouble(actualDiscountedAmount.replaceAll("[^\\d.]", ""));
+		
+		Assert.assertTrue("Discounted amount mismatch. Expected: " + expectedDiscountedAmount + ", Actual: " + actualValue, 
+			Math.abs(expectedDiscountedAmount - actualValue) < 0.01);
+	}
+	
+	public String verifyDiscountedAmountAndGetValue(String originalFine, String discountAmount)
+	{
+		double originalFineValue = Double.parseDouble(originalFine.replaceAll("[^\\d.]", ""));
+		double discountAmountValue = Double.parseDouble(discountAmount);
+		double expectedDiscountedAmount = originalFineValue - discountAmountValue;
+		
+		String actualDiscountedAmount = driverUtilities.get().getAttribute(newFineAmountDueInput, "value");
+		double actualValue = Double.parseDouble(actualDiscountedAmount.replaceAll("[^\\d.]", ""));
+		
+		Assert.assertTrue("Discounted amount mismatch. Expected: " + expectedDiscountedAmount + ", Actual: " + actualValue, 
+			Math.abs(expectedDiscountedAmount - actualValue) < 0.01);
+		
+		return actualDiscountedAmount;
+	}
+	
+	public void enterRemark()
+	{
+		String remark = "Test discount remark " + Util.generateRandomNumber(5);
+		driverUtilities.get().typeIntoTextBox(remarkTextarea, remark);
+	}
+	
+	public void clickSubmitButtonFromAddDiscountPopup()
+	{
+		driverUtilities.get().clickOnElement(submitButton);
 	}
 }

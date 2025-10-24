@@ -165,6 +165,18 @@ public class Util
 		return result;
 	}
 	
+	public static String getFutureDate(int days)
+	{
+		SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+		Date date = new Date();
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(Calendar.DAY_OF_YEAR, +days);
+		Date futureDate = calendar.getTime();
+		String result = formatter.format(futureDate);
+		return result;
+	}
+	
 	public static String getCurrentSystemDateWithMoreMins( String format , int minute)
 	{ 
 		SimpleDateFormat formatter = new SimpleDateFormat(format);
