@@ -80,6 +80,13 @@ public class LoginPageSteps extends Base
 		try { Thread.sleep(1000);}catch(InterruptedException e) {}
 	}
 	
+	@When("user opens payment application")
+	public void open_payment_application()
+	{
+		threadLocalDriver.get().get(Settings.payment_Url);
+		try { Thread.sleep(1000);}catch(InterruptedException e) {}
+	}
+	
 	@When("user do login to processing pro application with valid credentials")
 	public void login_to_processing_valid_credentials()
 	{
@@ -90,6 +97,12 @@ public class LoginPageSteps extends Base
 	public void login_to_cx_support_valid_credentials()
 	{
 		CurrentPage.getInstance(LoginPage.class).loginCXSupportWithValidCredentials();
+	}
+	
+	@When("user do login to payment application with valid credentials")
+	public void login_to_payment_valid_credentials()
+	{
+		CurrentPage.getInstance(LoginPage.class).loginPaymentWithValidCredentials();
 	}
 	
 	@When("user do login to processing pro application with {string} invalid user name")
@@ -230,4 +243,10 @@ public class LoginPageSteps extends Base
 	{
         CurrentPage.getInstance(LoginPage.class).verifyPasswordResetPage();
     }
+	
+	@When("user navigate to login page")
+	public void user_navigate_to_login_page()
+	{
+		CurrentPage.getInstance(LoginPage.class).clickOnLoginLink();
+	}
 }

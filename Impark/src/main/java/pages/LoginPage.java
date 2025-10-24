@@ -30,6 +30,9 @@ public class LoginPage extends BasePage
 	@FindBy(how=How.XPATH, using="//button[contains(@type,'submit') and contains(text(),'Sign In')]")
 	public WebElement loginButton;
 	
+	@FindBy(how=How.XPATH, using="//button[contains(@type,'submit') and contains(text(),'Log In')]")
+	public WebElement loginPaymentAppButton;
+	
 	@FindBy(how=How.XPATH, using="//a[contains(@href,'forgot-password')]")
 	public WebElement forgotPasswordLink;
 	
@@ -44,6 +47,16 @@ public class LoginPage extends BasePage
 	
 	@FindBy(how=How.XPATH, using="//*[@class='alert alert-danger']")
 	public WebElement errorMessage;
+	
+	//payment application locators
+	@FindBy(how=How.XPATH, using="//a[contains(@href,'/login')]")
+	public WebElement loginLink;
+	
+	@FindBy(how=How.XPATH, using="//a[contains(@href,'/') and contains(text(),'Search')]")
+	public WebElement searchLink;
+	
+	@FindBy(how=How.XPATH, using="//div[@class='recaptcha-checkbox-border']")
+	public WebElement recaptchaCheckbox;
 	
 	private void enterUserName()
 	{
@@ -63,6 +76,12 @@ public class LoginPage extends BasePage
 		driverUtilities.get().typeIntoTextBox(userNameTextBox, Settings.cxSupportUserId);
 	}
 	
+	private void enterPaymentUserName()
+	{
+		driverUtilities.get().clearTextBox(userNameTextBox);
+		driverUtilities.get().typeIntoTextBox(userNameTextBox, Settings.paymentAppUserId);
+	}
+	
 	private void enterUserName(String userName)
 	{
 		driverUtilities.get().clearTextBox(userNameTextBox);
@@ -74,6 +93,13 @@ public class LoginPage extends BasePage
 		//System.out.println("Password is:="+EncryptDecPassword.decrypt(Settings.password));
 		driverUtilities.get().clearTextBox(passwordTextBox);
 		driverUtilities.get().typeIntoTextBox(passwordTextBox, EncryptDecPassword.decrypt(Settings.cxSupportPassword));
+	}
+	
+	private void enterPaymentPassword()
+	{
+		//System.out.println("Password is:="+EncryptDecPassword.decrypt(Settings.password));
+		driverUtilities.get().clearTextBox(passwordTextBox);
+		driverUtilities.get().typeIntoTextBox(passwordTextBox, EncryptDecPassword.decrypt(Settings.paymentAppPassword));
 	}
 	
 	private void enterPassword()
@@ -101,6 +127,12 @@ public class LoginPage extends BasePage
 		try {Thread.sleep(200);}catch(InterruptedException e) {}
 	}
 	
+	private void clickOnPaymentAppLoginButton()
+	{
+		try {driverUtilities.get().clickOnElement(loginPaymentAppButton);}catch(NoSuchElementException e) {}
+		try {Thread.sleep(200);}catch(InterruptedException e) {}
+	}
+	
 	public void refreshBrowser()
 	{
 		driverUtilities.get().refreshBrowser();
@@ -119,6 +151,16 @@ public class LoginPage extends BasePage
 		enterCXSupportUserName();
 		enterCXSupportPassword();
 		clickOnLoginButton();
+	}
+	
+	public void loginPaymentWithValidCredentials()
+	{
+		enterPaymentUserName();
+		enterPaymentPassword();
+		try {Thread.sleep(2000);}catch(InterruptedException e1) {}
+		//checkImNotARobotCheckbox();
+		try {Thread.sleep(7000);}catch(InterruptedException e1) {}
+		clickOnPaymentAppLoginButton();
 	}
 	
 	public void doLoginWithInvalidUserName(String userName)
@@ -317,5 +359,15 @@ public class LoginPage extends BasePage
 	public void clickOnBackButtonOfBrowser()
 	{
 		driverUtilities.get().navigateBackToBrowser();
+	}
+	
+	public void clickOnLoginLink()
+	{
+		driverUtilities.get().clickOnElement(loginLink);
+	}
+	
+	public void checkImNotARobotCheckbox()
+	{
+		driverUtilities.get().clickOnElement(recaptchaCheckbox);
 	}
 }

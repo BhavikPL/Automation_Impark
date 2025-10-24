@@ -5,10 +5,13 @@ public class Settings
 	public static final String clientName = ConfigReader.getPropertiesFromConfigFile("Global","clientName");
 	public static final String application_Url = ConfigReader.getPropertiesFromConfigFile("Global","QAStage_Url");
 	public static final String cxSupport_Url = ConfigReader.getPropertiesFromConfigFile("Global","cxSupport_Url");
+	public static final String payment_Url = ConfigReader.getPropertiesFromConfigFile("Global","impark_payment_Url");
 	public static final String userId = ConfigReader.getPropertiesFromConfigFile("Global","userId");
 	public static final String password = ConfigReader.getPropertiesFromConfigFile("Global","password");
 	public static final String cxSupportUserId = ConfigReader.getPropertiesFromConfigFile("Global","cxSupportUserId");
 	public static final String cxSupportPassword = ConfigReader.getPropertiesFromConfigFile("Global","cxSupportPassword");
+	public static final String paymentAppUserId = ConfigReader.getPropertiesFromConfigFile("Global","imparkPaymentUserId");
+	public static final String paymentAppPassword = ConfigReader.getPropertiesFromConfigFile("Global","imparkPaymentPassword");
 	public static final String browserName = ConfigReader.getPropertiesFromConfigFile("Global","browser");
 	public static final String runMode = ConfigReader.getPropertiesFromConfigFile("Global","headlessMode");
 	

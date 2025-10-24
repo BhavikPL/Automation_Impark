@@ -4,7 +4,6 @@ import base.Base;
 import base.BasePage;
 import io.cucumber.java.en.When;
 import pages.HomePage;
-import pages.PermitAdministrationPage;
 
 public class HomePageSteps extends Base
 {	
@@ -63,11 +62,5 @@ public class HomePageSteps extends Base
 	public void user_extends_permits_administration_menu()
 	{
 	    CurrentPage.getInstance(HomePage.class).extendsPermitsAdministration();
-	}
-	
-	@When("user clicks on to the set up permits option")
-	public void user_clicks_on_to_the_set_up_permits_option()
-	{
-	    CurrentPage.getInstance(PermitAdministrationPage.class).clickOnSetUpPermits();
 	}
 }
