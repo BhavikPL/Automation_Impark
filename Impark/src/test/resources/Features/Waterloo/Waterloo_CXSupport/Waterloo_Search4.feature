@@ -69,6 +69,7 @@ When user entered "2" as Discount Days from add discount popup
 Then verify that Discount End Date is populating the "2" days of future with respect to current date
 Then verify that New Fine Amount Due is the "search_fine" minus "10" as discounted amount and save its value as "search_fine_discounted" into temp file
 When user entered the remark from add discount popup
+And user wait for "2" seconds
 And click on to the Submit button from add discount popup
 And user wait for "5" seconds
 Then verify that Total Amount is the summation of "search_fine_discounted"

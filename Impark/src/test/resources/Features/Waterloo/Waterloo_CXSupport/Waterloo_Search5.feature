@@ -112,6 +112,7 @@ Then verify cancel citation form with "search1_number" key as citation number
 Then verify cancel citation form with "search2_number" key as citation number
 When user enters cancel citation comments and save its value as "search_cancel_comment" into temp file
 When user select cancel citation reason and save its value as "search_cancel_reason" into temp file
+And user wait for "2" seconds
 And user clicks on to the sumbit button of cancel citation popup
 And user wait for "2" seconds
 Then verify that notice with "search1_number" citation number has "Cancelled" status

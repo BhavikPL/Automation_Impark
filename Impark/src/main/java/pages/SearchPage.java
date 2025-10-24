@@ -116,6 +116,9 @@ public class SearchPage extends BasePage
 	@FindBy(how = How.XPATH, using = "//p[contains(normalize-space(.), 'Cancel Notice')]/following-sibling::div/button[contains(text(),'Submit')]")
 	public WebElement cancelCitationSubmitButton;
 	
+	//@FindBy(how = How.XPATH, using = "//button[contains(text(),'Submit')]")
+	//public WebElement cancelCitationSubmitButton;
+	
 	//Note popup
 	@FindBy(how = How.XPATH, using = "//h3[contains(text(),'Support Note')]")
 	public WebElement notePopupHeading;
