@@ -427,7 +427,7 @@ public class SearchPageSteps extends Base
 	@When("user close the popup")
 	public void user_close_the_popup()
 	{
-		CurrentPage.getInstance(SearchPage.class).enterCardDetails();
+		CurrentPage.getInstance(SearchPage.class).closePopup();
 	}
 	
 	@Then("verify that Original fine amount is same as {string} citation fine")

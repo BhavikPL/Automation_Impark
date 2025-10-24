@@ -1,7 +1,7 @@
 #Author: Bhavik Chondager
-
+@waterloo
 @Search
-Feature: Verify search ticket functionality
+Feature: For two citations if one is cancelled then payment screen, for payment only valid's fine will be considered
 
 @datasetup
 Scenario: setup for test

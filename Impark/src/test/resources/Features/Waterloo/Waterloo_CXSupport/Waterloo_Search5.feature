@@ -1,8 +1,7 @@
 #Author: Bhavik Chondager
-
 @waterloo
 @Search
-Feature: Two citations associated with same plate number and admin adds discount and pay for these two citations
+Feature: For two citations make them to void and verify status
 
 @datasetup
 Scenario: setup for test
@@ -104,38 +103,19 @@ Then verify that "Support Notes" link is present in search result
 Then verify that "Pay" link is present in search result
 Then verify that "View Details" link is present in search result
 Then verify that "search2_number" is the value for notice number field after search
-Then verify that Total Amount is the summation of "search1_fine" and "search2_fine" 
+Then verify that Total Amount is the summation of "search1_fine" and "search2_fine"
 
-Scenario: Admin pay for multiple citation at a time
-When user click on to the "Pay" button from top bar
-And user wait for "5" seconds
-Then verify that page has "Plate number" label and "search_plate" as key its value
-Then verify that page has "Notice number" label and "search1_number" as key its value
-Then verify that page has "Notice number" label and "search2_number" as key its value
-Then verify that page has "Payment amount" label and "search1_fine" as key its value
-Then verify that page has "Payment amount" label and "search2_fine" as key its value
-Then verify the payment amount is total of "search1_fine" and "search2_fine" for "2" tickets from payment page
-When user clicks on to the make payment button
-Then verify the message "Enter card number" visible on make payment screen
-Then verify the message "Enter expiry" visible on make payment screen
-Then verify the message "Enter cvc" visible on make payment screen
-When user enters "bhavik.chondager@parkloyalty.com" for "Email Address" placeholder for payment
-##( issue without email payment is not wokring, email is also not mandatory  )
-And user enters card details
-And user clicks on to the make payment button
-And user wait for "5" seconds
-Then verify "Success!" label on screen
-Then verify "Payment has been posted successfully." label on screen
-Then verify that reciept id has been generated and save its value as "citation3_recieptID" into temp file
-
-Scenario: Navigate to the search screen by clicking on to the back button from payment screen
-When user click on to the back button
-And user wait for "3" seconds
-When user enters notice number by taking its value from temp file with key "search1_number" and "search2_number"
-And user clicks on search button
+Scenario: Admin make the citations void for multiple citation
+When user click on to the "Void" button from top bar
 And user wait for "2" seconds
-Then verify that notice with "search1_number" citation number has "Paid" status
-Then verify that notice with "search2_number" citation number has "Paid" status
+Then verify cancel citation form with "search1_number" key as citation number
+Then verify cancel citation form with "search2_number" key as citation number
+When user enters cancel citation comments and save its value as "search_cancel_comment" into temp file
+When user select cancel citation reason and save its value as "search_cancel_reason" into temp file
+And user clicks on to the sumbit button of cancel citation popup
+And user wait for "2" seconds
+Then verify that notice with "search1_number" citation number has "Cancelled" status
+Then verify that notice with "search2_number" citation number has "Cancelled" status
 
 Scenario: Close the browser
 When user close browser

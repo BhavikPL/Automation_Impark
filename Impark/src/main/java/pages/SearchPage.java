@@ -630,7 +630,7 @@ public class SearchPage extends BasePage
 	{
 		Assert.assertTrue(driverUtilities.get().isElementDisplayed(driverUtilities.get().getWebElement("//p[contains(normalize-space(.), 'Cancel Notice')]")));
 		String citationNo = driverUtilities.get().getElementText(driverUtilities.get().getWebElement("//span[contains(normalize-space(.), 'Selected Notice Numbers')]/following-sibling::textarea"));
-		Assert.assertEquals(citationNo, citationNumber);
+		Assert.assertTrue(citationNo.contains(citationNumber));
 	}
 	
 	public String selectCancelCitationReason()
@@ -907,12 +907,17 @@ public class SearchPage extends BasePage
 	{
 		String closeXPath = "//div[contains(@class,'close')]//button";
 		int c = driverUtilities.get().getNumberOfElement(closeXPath);
+		System.out.println("Total close button:="+c);
+		try {Thread.sleep(1000);}catch(InterruptedException e1) {}
 		
-		for(int i=1 ; i<=c; i++ )
+		for(int i=c ; i>=1; i-- )
 		{
 			closeXPath = "(//div[contains(@class,'close')]//button)["+i+"]";
+			System.out.println("closeXPath:="+closeXPath);
 			WebElement e = driverUtilities.get().getWebElement(closeXPath);
+			try {Thread.sleep(1000);}catch(InterruptedException e1) {}
 			driverUtilities.get().clickOnElement(e);
+			try {Thread.sleep(1000);}catch(InterruptedException e1) {}
 		}
 	}
 	

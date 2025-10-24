@@ -1,3 +1,4 @@
+@waterloo
 @Search
 Feature: Verify search ticket functionality
 

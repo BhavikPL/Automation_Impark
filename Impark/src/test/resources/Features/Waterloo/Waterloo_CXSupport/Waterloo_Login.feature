@@ -1,4 +1,5 @@
 
+@waterloo
 @Login
 Feature: verify login functionality of cx support application
  

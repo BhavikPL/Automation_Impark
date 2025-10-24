@@ -1,4 +1,6 @@
-@Search4
+
+@waterloo
+@Search
 Feature: Add discount to the ticket and pay
 
 @datasetup
