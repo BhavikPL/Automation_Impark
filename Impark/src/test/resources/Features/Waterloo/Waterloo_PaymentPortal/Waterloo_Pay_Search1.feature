@@ -48,25 +48,25 @@ And user opens payment application
 And user navigate to login page
 And user wait for "1" seconds
 And user do login to payment application with valid credentials
-And user enters otp into OTP Verification page
+And user enters otp into OTP Verification page from payment application
 And user wait for "2" seconds
 
 Scenario: Search for notices functionality
 Then verify that Search For Notices page opens
-When user enters notice number by taking its value from temp file with key "search_number"
+When user enters notice number by taking its value from temp file with key "search_number" from payment application
 And user clicks on search button
 And user wait for "2" seconds
-Then verify that notice with "search_number" citation number has been searched successfully
+Then verify that notice with "search_number" citation number has been searched successfully from payment application
 Then verify that today is the citation issue date
-Then verify that notice with "search_plate" citation plate has been searched successfully
-Then verify that notice with "search_vioDesc" citation violation description has been searched successfully
-Then verify that notice with "Valid" citation status has been searched successfully
-Then verify that notice with "search_fine" citation original fine has been searched successfully
-Then verify that "View Images" link is present in search result
-Then verify that "Pay" link is present in search result
-Then verify that "search_number" is the value for notice number field after search
-Then verify sitename in the search result
-Then verify that total "1" search notices are in result
+Then verify that notice with "search_plate" citation plate has been searched successfully from payment application
+Then verify that notice with "search_vioDesc" citation violation description has been searched successfully from payment application
+Then verify that notice with "Valid" citation status has been searched successfully from payment application
+Then verify that notice with "search_fine" citation original fine has been searched successfully from payment application
+Then verify that "View Images" link is present in search result from payment application
+Then verify that "Pay" link is present in search result from payment application
+Then verify that "search_number" is the value for notice number field after search from payment application
+Then verify sitename in the search result from payment application
+Then verify that total "1" search notices are in result from payment application
 
 Scenario: Search by license plate and state
 When user clicks search link from search result page
@@ -74,12 +74,12 @@ And user enters License Plate by taking its value from temp file with key "searc
 And user selects the License Province or State value from list by taking its value from temp file with key "search_state"
 And user clicks on search button
 And user wait for "2" seconds
-Then verify that notice with "search_number" citation number has been searched successfully
+Then verify that notice with "search_number" citation number has been searched successfully from payment application
 Then verify that today is the citation issue date
-Then verify that notice with "search_plate" citation plate has been searched successfully
-Then verify that notice with "search_vioDesc" citation violation description has been searched successfully
-Then verify that notice with "Valid" citation status has been searched successfully
-Then verify that notice with "search_fine" citation original fine has been searched successfully
+Then verify that notice with "search_plate" citation plate has been searched successfully from payment application
+Then verify that notice with "search_vioDesc" citation violation description has been searched successfully from payment application
+Then verify that notice with "Valid" citation status has been searched successfully from payment application
+Then verify that notice with "search_fine" citation original fine has been searched successfully from payment application
 Then verify that "Add Discount" link is present in search result
 Then verify that "Void" link is present in search result
 Then verify that "Support Notes" link is present in search result
@@ -89,35 +89,35 @@ Then verify sitename in the search result
 Then verify that total "1" search notices are in result
 
 Scenario: Search validation with empty fields
-When user clicks search link from search result page
-And user clears Notice number and License Plate fields
-And user clicks on search button
+When user clicks search link from search result page from payment application
+And user clears Notice number and License Plate fields from payment application
+And user clicks on search button from payment application
 And user wait for "2" seconds
-Then verify that "Enter ticket number or Licence Plate" message popups
+Then verify that "Enter ticket number or Licence Plate" message popups from payment portal
 
 Scenario: Prevent special characters in notice and license inputs
 When user wait for "7" seconds
-And user enters special characters into Notice number and License Plate fields
-Then verify that special characters are not entered into Notice number and License Plate fields
+And user enters special characters into Notice number and License Plate fields from payment application
+Then verify that special characters are not entered into Notice number and License Plate fields from payment application
 
 Scenario: Search by citation number and make the citation cancelled and verify view details
-When user enters notice number by taking its value from temp file with key "search_number"
-And user clicks on search button
+When user enters notice number by taking its value from temp file with key "search_number" from payment application
+And user clicks on search button from payment application
 And user wait for "4" seconds
-Then verify that notice with "search_number" citation number has been searched successfully
+Then verify that notice with "search_number" citation number has been searched successfully from payment application
 Then verify that today is the citation issue date
-Then verify that notice with "search_plate" citation plate has been searched successfully
-Then verify that notice with "search_vioDesc" citation violation description has been searched successfully
-Then verify that notice with "Valid" citation status has been searched successfully
-Then verify that notice with "search_fine" citation original fine has been searched successfully
-Then verify that "Add Discount" link is present in search result
-Then verify that "Void" link is present in search result
-Then verify that "Support Notes" link is present in search result
-Then verify that "Pay" link is present in search result
-Then verify that "View Details" link is present in search result
+Then verify that notice with "search_plate" citation plate has been searched successfully from payment application
+Then verify that notice with "search_vioDesc" citation violation description has been searched successfully from payment application
+Then verify that notice with "Valid" citation status has been searched successfully from payment application
+Then verify that notice with "search_fine" citation original fine has been searched successfully from payment application
+Then verify that "Add Discount" link is present in search result from payment application
+Then verify that "Void" link is present in search result from payment application
+Then verify that "Support Notes" link is present in search result from payment application
+Then verify that "Pay" link is present in search result from payment application
+Then verify that "View Details" link is present in search result from payment applicatio from payment applicationn
 Then verify that "search_number" is the value for notice number field after search
-Then verify sitename in the search result
-Then verify that total "1" search notices are in result
+Then verify sitename in the search result from payment application
+Then verify that total "1" search notices are in result from payment application
 
 Scenario: Close the browser
 When user close browser

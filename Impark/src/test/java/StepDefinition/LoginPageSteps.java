@@ -184,6 +184,12 @@ public class LoginPageSteps extends Base
 		CurrentPage.getInstance(LoginPage.class).enterOtp();
 	}
 	
+	@When("user enters otp into OTP Verification page from payment application")
+	public void user_enters_otp_into_OTP_Verification_page_payment() throws IOException, MailosaurException, AWTException
+	{
+		CurrentPage.getInstance(LoginPage.class).enterOtp_payment();
+	}
+	
 	@Then("verify that login successfull")
 	public void verify_that_login_successfull()
 	{

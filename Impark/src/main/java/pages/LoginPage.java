@@ -239,6 +239,17 @@ public class LoginPage extends BasePage
 		try {Thread.sleep(5000);}catch(InterruptedException e) {}
 	}
 	
+	public void enterOtp_payment() throws IOException, MailosaurException, AWTException
+	{
+		//String otp = EmailOTPReader.getOtp();
+		String otp = "527175";
+		//System.out.println("otp is:="+otp);
+		try {driverUtilities.get().waitForElementToBePresent2("//div[contains(@class,'otp-login-sec')]//input[1]");}catch(TimeoutException e) {}
+		driverUtilities.get().clickOnElement(driverUtilities.get().getWebElement("//div[contains(@class,'otp-login-sec')]//input[1]"));
+		driverUtilities.get().pasteData(otp);
+		try {Thread.sleep(5000);}catch(InterruptedException e) {}
+	}
+	
 	public void verifySuccessLogin()
 	{
 		try {driverUtilities.get().waitForElementToBePresent2("//*[contains(text(),'Dashboard')]");}catch(TimeoutException e) {}
