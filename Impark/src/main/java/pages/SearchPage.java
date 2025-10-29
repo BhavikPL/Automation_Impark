@@ -243,6 +243,12 @@ public class SearchPage extends BasePage
 		driverUtilities.get().typeIntoTextBox(noticeNumberTextBox, noticeNumber);
 	}
 	
+	public void enterNoticeNumber(String noticeNumber)
+	{
+		driverUtilities.get().clearTextBox(noticeNumberTextBox);
+		driverUtilities.get().typeIntoTextBox(noticeNumberTextBox, noticeNumber);
+	}
+	
 	public void enterNoticesNumberFromTempFile(String key1, String key2)
 	{
 		String citationNumbers = key1+","+key2;
@@ -263,6 +269,7 @@ public class SearchPage extends BasePage
 
 	public void clickSearchLinkFromSearchResultPage()
 	{
+		driverUtilities.get().makeElementVisibleIntoScreenAtMiddle(searchLinkFromResults);
 		driverUtilities.get().clickOnElement(searchLinkFromResults);
 	}
 	
@@ -355,6 +362,18 @@ public class SearchPage extends BasePage
 	}
 	
 	public void clickOnViewDetailsLinkCitationNumber(String number)
+	{
+		//WebElement citationSearched = driverUtilities.get().getWebElement("//h5[contains(text(),'"+number+"')]/preceding-sibling::p[normalize-space(contains(text(),'Notice Number'))]/parent::div/parent::div/preceding-sibling::div//button[contains(text(),'"+link+"')]");
+		//driverUtilities.get().moveCursorToAnElementAndClick(driverUtilities.get().getActions(), citationSearched);
+		
+		String path = "//h5[contains(text(),'"+number+"')]/ancestor::div[contains(@class,'details-searchCitation')][1]//button[normalize-space(contains(text(),'view Details'))]";
+		int c = driverUtilities.get().getNumberOfElement(path);
+		path = "(//h5[contains(text(),'"+number+"')]/ancestor::div[contains(@class,'details-searchCitation')][1]//button[normalize-space(contains(text(),'view Details'))])["+c+"]";
+		WebElement viewDetailsLink = driverUtilities.get().getWebElement(path);
+		driverUtilities.get().clickOnElement(viewDetailsLink);
+	}
+	
+	public void clickOnViewDetailsLinkTicketNumber(String number)
 	{
 		//WebElement citationSearched = driverUtilities.get().getWebElement("//h5[contains(text(),'"+number+"')]/preceding-sibling::p[normalize-space(contains(text(),'Notice Number'))]/parent::div/parent::div/preceding-sibling::div//button[contains(text(),'"+link+"')]");
 		//driverUtilities.get().moveCursorToAnElementAndClick(driverUtilities.get().getActions(), citationSearched);
@@ -832,6 +851,26 @@ public class SearchPage extends BasePage
 		}
 	}
 	
+	public void verifySupportNoteUserNameFromNoticeInfo(String citationNumber)
+	{
+		String loggedUserName = driverUtilities.get().getElementText(driverUtilities.get().getWebElement("(//span[contains(@class,'cstm-header-name')])[2]"));
+		loggedUserName = loggedUserName.split(" ")[0];
+		System.out.println("Logged user name is:="+loggedUserName);
+		
+		WebElement supportNameUser = driverUtilities.get().getWebElement("//*[contains(text(),'Support Notes')]/following-sibling::div//table/tbody/tr//*[contains(text(),'"+citationNumber+"')]/ancestor::td/preceding-sibling::td[contains(text(),'"+loggedUserName+"')]");
+		Assert.assertTrue(driverUtilities.get().isElementDisplayed(supportNameUser));
+	}
+	
+	public void verifyVoidDetailsUserNameFromNoticeInfo()
+	{
+		String loggedUserName = driverUtilities.get().getElementText(driverUtilities.get().getWebElement("(//span[contains(@class,'cstm-header-name')])[2]"));
+		loggedUserName = loggedUserName.split(" ")[0];
+		System.out.println("Logged user name is:="+loggedUserName);
+		
+		WebElement voidUser = driverUtilities.get().getWebElement("//h4[contains(text(),'Void Details')]/ancestor::div/following-sibling::div/div[contains(@class,'user-info')]/p[contains(text(),'Voided By')]/following-sibling::h5[contains(text(),'"+loggedUserName+"')]");
+		Assert.assertTrue(driverUtilities.get().isElementDisplayed(voidUser));
+	}
+	
 	public void verifyPaymentAmount(String val1 , String val2, String ticketCounts)
 	{
 		val1 = val1.replaceAll("[^\\d.]", "");
@@ -894,6 +933,24 @@ public class SearchPage extends BasePage
 	public void verifyCitationStatus(String number , String status)
 	{
 		WebElement ele = driverUtilities.get().getWebElement("//h5[contains(text(),'"+number+"')]/ancestor::div/following-sibling::div//p[contains(text(),'Status')]/following-sibling::h5[contains(text(),'"+status+"')]");
+		Assert.assertTrue(driverUtilities.get().isElementDisplayed(ele));
+	}
+	
+	public void verifyCitationViolation(String number , String status)
+	{
+		WebElement ele = driverUtilities.get().getWebElement("//h5[contains(text(),'"+number+"')]/ancestor::div/following-sibling::div//p[contains(text(),'Violation')]/following-sibling::h5[contains(text(),'"+status+"')]");
+		Assert.assertTrue(driverUtilities.get().isElementDisplayed(ele));
+	}
+	
+	public void verifyCitationViolationType(String number , String status)
+	{
+		WebElement ele = driverUtilities.get().getWebElement("//h5[contains(text(),'"+number+"')]/ancestor::div/following-sibling::div//p[contains(text(),'Violation type')]/following-sibling::h5[normalize-space()='"+status+"']");
+		Assert.assertTrue(driverUtilities.get().isElementDisplayed(ele));
+	}
+	
+	public void verifyCitationLotBranch(String number , String status)
+	{
+		WebElement ele = driverUtilities.get().getWebElement("//h5[contains(text(),'"+number+"')]/ancestor::div/following-sibling::div//p[contains(text(),'Branch-Lot')]/following-sibling::h5[normalize-space()='"+status+"']");
 		Assert.assertTrue(driverUtilities.get().isElementDisplayed(ele));
 	}
 	

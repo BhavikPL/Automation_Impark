@@ -28,6 +28,12 @@ public class SearchPageSteps extends Base
 		CurrentPage.getInstance(SearchPage.class).enterNoticeNumberFromTempFile(key);
 	}
 	
+	@When("user enters {string} notice number")
+	public void user_enters_notice_number(String key)
+	{
+		CurrentPage.getInstance(SearchPage.class).enterNoticeNumber(key);
+	}
+	
 	@When("user clicks on search button")
 	public void user_clicks_on_search_button()
 	{
@@ -113,6 +119,11 @@ public class SearchPageSteps extends Base
 		CurrentPage.getInstance(SearchPage.class).clickOnViewDetailsLinkCitationNumber(expectedNoticeNumber);
 	}
 	
+	@When("user click on to the view details link of {string} citation number")
+	public void user_click_on_to_the_link_of_citation_number(String citationNumber) throws IOException
+	{
+		CurrentPage.getInstance(SearchPage.class).clickOnViewDetailsLinkTicketNumber(citationNumber);
+	}
 	
 	@When("user click on to the {string} link of {string} citation number ticket")
 	public void user_click_on_to_the_link_of_citation_number_ticket(String link, String citationNumber) throws IOException
@@ -132,6 +143,12 @@ public class SearchPageSteps extends Base
 	public void verify_section_details_key_its_value(String section, String label , String key) throws IOException
 	{
 		String keyValue = PropertyUtil.getFromTempPropertyFile(Path.dataProperty, key);
+		CurrentPage.getInstance(SearchPage.class).verifySectionLabelAndKeyValue(section, label , keyValue);
+	}
+	
+	@Then("verify section {string} for {string} and {string}")
+	public void verify_section_details(String section, String label , String keyValue) throws IOException
+	{
 		CurrentPage.getInstance(SearchPage.class).verifySectionLabelAndKeyValue(section, label , keyValue);
 	}
 	
@@ -410,6 +427,24 @@ public class SearchPageSteps extends Base
 		CurrentPage.getInstance(SearchPage.class).verifyCitationStatus(keyValue, status);
 	}
 	
+	@Then("verify that notice with {string} citation number has {string} violation")
+	public void verify_that_notice_with_citation_number_has_violation(String citation, String violation) throws IOException
+	{
+		CurrentPage.getInstance(SearchPage.class).verifyCitationViolation(citation, violation);
+	}
+	
+	@Then("verify that notice with {string} citation number has {string} violation type")
+	public void verify_that_notice_with_citation_number_has_violationType(String citation, String violation) throws IOException
+	{
+		CurrentPage.getInstance(SearchPage.class).verifyCitationViolationType(citation, violation);
+	}
+	
+	@Then("verify that notice with {string} citation number has {string} BranchLot")
+	public void verify_that_notice_with_citation_number_has_lot_branch(String citation, String violation) throws IOException
+	{
+		CurrentPage.getInstance(SearchPage.class).verifyCitationLotBranch(citation, violation);
+	}
+	
 	@Then("verify that notice with {string} citation number has {string} vio description")
 	public void verify_that_notice_with_citation_number_has_vio_description(String citation, String vioDesc) throws IOException
 	{
@@ -546,5 +581,18 @@ public class SearchPageSteps extends Base
 	{
 		String keyValue = PropertyUtil.getFromTempPropertyFile(Path.dataProperty, key);
 		CurrentPage.getInstance(SearchPage.class).verifyDownloadUnderNoticeInfoFromViewDetails(keyValue);
+	}
+	
+	@Then("verify that support notes section for {string} has user name same as logged user name info page from view details")
+	public void verify_that_support_notes_section_has_user_name_same_as_logged_user_name_info_page_from_view_details(String key) throws IOException
+	{
+		String keyValue = PropertyUtil.getFromTempPropertyFile(Path.dataProperty, key);
+		CurrentPage.getInstance(SearchPage.class).verifySupportNoteUserNameFromNoticeInfo(keyValue);
+	}
+	
+	@Then("verify that void details has user name same as logged user name info page from view details")
+	public void verify_that_void_details_has_user_name_same_as_logged_user_name_info_page_from_view_details() throws IOException
+	{
+		CurrentPage.getInstance(SearchPage.class).verifyVoidDetailsUserNameFromNoticeInfo();
 	}
 }

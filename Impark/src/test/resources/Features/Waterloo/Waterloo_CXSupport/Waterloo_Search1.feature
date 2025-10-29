@@ -138,7 +138,7 @@ Then verify section "Location Details" for "Block" and "search_block" as key its
 Then verify section "Violation Details" for "Description" and "search_description" as key its value
 Then verify section "Enforcement Notes" for "Printed Remark 1" and "search_remark" as key its value
 Then verify section "Violation Details" for "Description" and "search_vioDesc" as key its value
-Then verify total "2" images is under "Images" label
+Then verify total "1" images is under "Images" label
 
 Scenario: verify financial page
 When user navigate to "Financial" tab name and "#commercial" href link
@@ -182,6 +182,10 @@ Then verify section "Location Details" for "Block" and "search_block" as key its
 Then verify section "Violation Details" for "Description" and "search_description" as key its value
 Then verify section "Enforcement Notes" for "Printed Remark 1" and "search_remark" as key its value
 Then verify section "Void Details" for "Notice void comments" and "search_cancel_comment" as key its value
+Then verify section "Void Details" for "Void Reason" and "search_cancel_reason" as key its value
+Then verify section "Violation Details" for "Description" and "search_vioDesc" as key its value
+
+
 Then verify total "1" images is under "Images" label
 
 Scenario: Add support note to the citation and verify
@@ -216,12 +220,17 @@ Then verify that audit "Old Value: Valid" visible
 Then verify that audit "New Value: Suspended" visible
 Then verify that audit "Reason: citation note added" visible
 
-Scenario: verify the view details for support note details and void details
+Scenario: verify the view details for support note details
 When user navigate to "Notice Info" tab name and "#citation-info" href link
 And user wait for "4" seconds
 Then verify that "search_note" note appears under notice info page from view details
 Then verify download link for "search_note" note appears under notice info page from view details
+Then verify that support notes section for "search_note" has user name same as logged user name info page from view details
 
+Scenario: verify the view details for void details
+Then verify section "Void Details" for "Notice void comments" and "search_cancel_comment" as key its value
+Then verify section "Void Details" for "Void Reason" and "search_cancel_reason" as key its value
+Then verify that void details has user name same as logged user name info page from view details
 
 Scenario: Close the browser
 When user close browser
