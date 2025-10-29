@@ -125,10 +125,13 @@ When user click on to the view details link of "search_number" citation number t
 And user wait for "2" seconds
 Then verify section "Officer Details" for "Officer Name" and "search_officer" as key its value
 Then verify section "Vehicle Details" for "Vehicle Make" and "search_vehmake" as key its value
+Then verify section "Vehicle Details" for "Vehicle Model" and "search_vehmodel" as key its value
 Then verify section "Vehicle Details" for "Licence Plate Number" and "search_plate" as key its value
 Then verify section "Location Details" for "Street" and "search_street" as key its value
 Then verify section "Location Details" for "Block" and "search_block" as key its value
 Then verify section "Violation Details" for "Description" and "search_description" as key its value
+#Then verify section "Enforcement Notes" for "Printed Remark 1" and "search_remark" as key its value
+Then verify section "Violation Details" for "Description" and "search_vioDesc" as key its value
 Then verify total "1" images is under "Images" label
 
 Scenario: verify financial page
@@ -181,6 +184,28 @@ And user click on to the View all support notes link from support note popup
 And user wait for "1" seconds
 Then verify that "search_note" note appears under citation info page
 And verify download link for "search_note" note appears under citation info page
+When user close the popup
+
+Scenario: verify audit trail for citation events making citation void and support note added
+When user click on to the view details link of "search_number" citation number ticket
+And user wait for "2" seconds
+And user navigate to "Audit Trail" tab name and "#audit-trail" href link
+And user wait for "4" seconds
+Then verify that audit "Old Value: Valid" visible
+Then verify that audit "New Value: Suspended" visible
+Then verify that audit "Reason: citation note added" visible
+
+Scenario: verify the view details for support note details
+When user navigate to "Notice Info" tab name and "#citation-info" href link
+And user wait for "4" seconds
+Then verify that "search_note" note appears under notice info page from view details
+Then verify download link for "search_note" note appears under notice info page from view details
+Then verify that support notes section for "search_note" has user name same as logged user name info page from view details
+
+Scenario: verify the view details for void details
+Then verify section "Void Details" for "Notice void comments" and "search_cancel_comment" as key its value
+Then verify section "Void Details" for "Void Reason" and "search_cancel_reason" as key its value
+Then verify that void details has user name same as logged user name info page from view details
 
 Scenario: Close the browser
 When user close browser

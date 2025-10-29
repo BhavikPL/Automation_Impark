@@ -1,8 +1,8 @@
 #Author: Bhavik Chondager
 @Demo
-@waterloo
-@Search6
-Feature: For two citations add support note verify support note
+@Phsa
+@PhsaSearch5
+Feature: For two citations make them to void and verify status
 
 @datasetup
 Scenario: setup for test
@@ -27,8 +27,6 @@ And user enters plate number and save its value as "search_plate" into temp file
 And user enters state name into state field and save its value as "search1_state" into temp file
 And user enters veh make into veh make field and save its value as "search1_vehmake" into temp file
 And user enters veh model into veh model field and save its value as "search1_vehmodel" into temp file
-And user enters veh color into veh color field and save its value as "search1_color" into temp file
-And user select body style from the style list and save its value as "search1_style" into temp file
 And user enters street into street field and save its value as "search1_street" into temp file
 And user enters lot into lot field and save its value as "search1_lot" and "search1_block" and "search1_street" into temp file
 And user select vio code from the vio code list and save its value as "search1_viocode" into temp file
@@ -36,8 +34,9 @@ And user select vio description from the vio code list and save its value as "se
 Then verify description from the description list and save its value as "search1_description" into temp file
 And verify the fine and save its value as "search1_fine" into temp file
 And verify the paid after and save its value as "search1_paidafter" into temp file
-When user enters remark and save its value as "search1_remark" into temp file
 And user enters block into block field and save its value as "search1_block" into temp file
+And user clicks on upload image button and upload "jpg" file
+And user wait for "10" seconds
 And user clicks on submit button to create ticket
 Then verify the successfully ticket creation message
 When user clicks on to the okay button of message
@@ -53,8 +52,6 @@ And user enters "search_plate" plate number
 And user enters state name into state field and save its value as "search2_state" into temp file
 And user enters veh make into veh make field and save its value as "search2_vehmake" into temp file
 And user enters veh model into veh model field and save its value as "search2_vehmodel" into temp file
-And user enters veh color into veh color field and save its value as "search2_color" into temp file
-And user select body style from the style list and save its value as "search2_style" into temp file
 And user enters street into street field and save its value as "search2_street" into temp file
 And user enters lot into lot field and save its value as "search2_lot" and "search2_block" and "search2_street" into temp file
 And user select vio code from the vio code list and save its value as "search2_viocode" into temp file
@@ -62,8 +59,9 @@ And user select vio description from the vio code list and save its value as "se
 Then verify description from the description list and save its value as "search2_description" into temp file
 And verify the fine and save its value as "search2_fine" into temp file
 And verify the paid after and save its value as "search2_paidafter" into temp file
-When user enters remark and save its value as "search2_remark" into temp file
 And user enters block into block field and save its value as "search2_block" into temp file
+And user clicks on upload image button and upload "jpg" file
+And user wait for "10" seconds
 And user clicks on submit button to create ticket
 Then verify the successfully ticket creation message
 When user clicks on to the okay button of message
@@ -106,35 +104,21 @@ Then verify that notice with "search2_number" citation number has view Details
 Then verify that "search2_number" is the value for notice number field after search
 Then verify that Total Amount is the summation of "search1_fine" and "search2_fine"
 
-Scenario: Admin add support note for multiple citation
-And user click on to the "Support Note" button from top bar
+Scenario: Admin make the citations void for multiple citation
+When user click on to the "Void" button from top bar
 And user wait for "2" seconds
-Then verify support note popup
-When user clicks on to the submit button of note popup
-Then verify that the validation message for note field
-When user wait for "2" seconds
-And user enters note and save its value as "search_note" into temp file
-And user clicks on choose file button and upload "pdf" file for note
+Then verify cancel citation form with "search1_number" key as citation number
+Then verify cancel citation form with "search2_number" key as citation number
+When user select cancel citation reason and save its value as "search_cancel_reason" into temp file
+And user wait for "2" seconds
+When user get cancel citation comments and save its value as "search_cancel_comment" into temp file
+And user clicks on choose file button and upload "pdf" file for void
 And user wait for "4" seconds
-Then verify that file uploaded into note section
-When user clicks on to the submit button of note popup
-Then verify note added sucess message
-When user wait for "5" seconds
-And user click on to the "Support Note" link of "search1_number" citation number ticket
-And user click on to the View all support notes link from support note popup
-And user wait for "1" seconds
-Then verify that "search_note" note appears under citation info page
-And verify download link for "search_note" note appears under citation info page
-When user close the popup
-And user wait for "1" seconds
-
-And user click on to the "Support Note" link of "search2_number" citation number ticket
-And user click on to the View all support notes link from support note popup
-And user wait for "1" seconds
-Then verify that "search_note" note appears under citation info page
-And verify download link for "search_note" note appears under citation info page
-When user close the popup
-And user wait for "1" seconds
+Then verify that file uploaded into void section
+And user clicks on to the sumbit button of cancel citation popup
+And user wait for "2" seconds
+Then verify that notice with "search1_number" citation number has "Cancelled" status
+Then verify that notice with "search2_number" citation number has "Cancelled" status
 
 Scenario: Close the browser
 When user close browser

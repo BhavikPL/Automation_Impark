@@ -1,7 +1,7 @@
 #Author: Bhavik Chondager
 @Demo
-@waterloo
-@Search3
+@Phsa
+@PhsaSearch3
 Feature: For two citations if one is cancelled then payment screen, for payment only valid's fine will be considered
 
 @datasetup
@@ -17,7 +17,7 @@ And user wait for "1" seconds
 And user clicks on to the create ticket option
 And user wait for "1" seconds
 
-Scenario: create a citation
+Scenario: create citation1
 When user enters citation number and save its value as "search_number" into temp file
 And user selects today date for issue date
 And user enters officer name into officer field and save its value as "search_officer" into temp file
@@ -27,8 +27,6 @@ And user enters plate number and save its value as "search_plate" into temp file
 And user enters state name into state field and save its value as "search_state" into temp file
 And user enters veh make into veh make field and save its value as "search_vehmake" into temp file
 And user enters veh model into veh model field and save its value as "search_vehmodel" into temp file
-And user enters veh color into veh color field and save its value as "search_color" into temp file
-And user select body style from the style list and save its value as "search_style" into temp file
 And user enters street into street field and save its value as "search_street" into temp file
 And user enters lot into lot field and save its value as "search_lot" and "search_block" and "search_street" into temp file
 And user select vio code from the vio code list and save its value as "search_viocode" into temp file
@@ -36,7 +34,6 @@ And user select vio description from the vio code list and save its value as "se
 Then verify description from the description list and save its value as "search_description" into temp file
 And verify the fine and save its value as "search_fine" into temp file
 And verify the paid after and save its value as "search_paidafter" into temp file
-When user enters remark and save its value as "search_remark" into temp file
 And user enters block into block field and save its value as "search_block" into temp file
 And user clicks on upload image button and upload "jpg" file
 And user wait for "10" seconds
@@ -55,8 +52,6 @@ And user enters "search_plate" plate number
 And user enters state name into state field and save its value as "search2_state" into temp file
 And user enters veh make into veh make field and save its value as "search2_vehmake" into temp file
 And user enters veh model into veh model field and save its value as "search2_vehmodel" into temp file
-And user enters veh color into veh color field and save its value as "search2_color" into temp file
-And user select body style from the style list and save its value as "search2_style" into temp file
 And user enters street into street field and save its value as "search2_street" into temp file
 And user enters lot into lot field and save its value as "search2_lot" and "search2_block" and "search2_street" into temp file
 And user select vio code from the vio code list and save its value as "search2_viocode" into temp file
@@ -64,8 +59,9 @@ And user select vio description from the vio code list and save its value as "se
 Then verify description from the description list and save its value as "search2_description" into temp file
 And verify the fine and save its value as "search2_fine" into temp file
 And verify the paid after and save its value as "search2_paidafter" into temp file
-When user enters remark and save its value as "search2_remark" into temp file
 And user enters block into block field and save its value as "search2_block" into temp file
+And user clicks on upload image button and upload "jpg" file
+And user wait for "10" seconds
 And user clicks on submit button to create ticket
 Then verify the successfully ticket creation message
 When user clicks on to the okay button of message
