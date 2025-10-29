@@ -18,7 +18,7 @@ public class Path
 	public static final String VolusiaConfigFilePath=rootPath+File.separator+"src"+File.separator+"main"+File.separator+"java"+File.separator+"config"+File.separator+"Volusia.properties";
 	public static final String CasperConfigFilePath=rootPath+File.separator+"src"+File.separator+"main"+File.separator+"java"+File.separator+"config"+File.separator+"Casper.properties";
 	public static final String ManhattanConfigFilePath=rootPath+File.separator+"src"+File.separator+"main"+File.separator+"java"+File.separator+"config"+File.separator+"Manhattan.properties";
-	public static final String IslandRailRoadConfigFilePath=rootPath+File.separator+"src"+File.separator+"main"+File.separator+"java"+File.separator+"config"+File.separator+"IslandRailRoad.properties";
+	public static final String PhsaConfigFilePath=rootPath+File.separator+"src"+File.separator+"main"+File.separator+"java"+File.separator+"config"+File.separator+"Phsa.properties";
 	public static final String WaterlooConfigFilePath=rootPath+File.separator+"src"+File.separator+"main"+File.separator+"java"+File.separator+"config"+File.separator+"Waterloo.properties";
 	public static final String envConfigFilePath=rootPath+File.separator+"src"+File.separator+"main"+File.separator+"java"+File.separator+"config"+File.separator+"Environment.properties";
 	public static final String tempconfigFilePath=rootPath+File.separator+"temp.properties";

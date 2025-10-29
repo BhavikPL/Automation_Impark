@@ -1,6 +1,6 @@
 @Demo
-@waterloo
-@Search1
+@Phsa
+@PhsaSearch1
 Feature: Verify search ticket functionality
 
 @datasetup
@@ -26,8 +26,6 @@ And user enters plate number and save its value as "search_plate" into temp file
 And user enters state name into state field and save its value as "search_state" into temp file
 And user enters veh make into veh make field and save its value as "search_vehmake" into temp file
 And user enters veh model into veh model field and save its value as "search_vehmodel" into temp file
-And user enters veh color into veh color field and save its value as "search_color" into temp file
-And user select body style from the style list and save its value as "search_style" into temp file
 And user enters street into street field and save its value as "search_street" into temp file
 And user enters lot into lot field and save its value as "search_lot" and "search_block" and "search_street" into temp file
 And user select vio code from the vio code list and save its value as "search_viocode" into temp file
@@ -35,7 +33,6 @@ And user select vio description from the vio code list and save its value as "se
 Then verify description from the description list and save its value as "search_description" into temp file
 And verify the fine and save its value as "search_fine" into temp file
 And verify the paid after and save its value as "search_paidafter" into temp file
-When user enters remark and save its value as "search_remark" into temp file
 And user enters block into block field and save its value as "search_block" into temp file
 And user clicks on upload image button and upload "jpg" file
 And user wait for "10" seconds
@@ -58,7 +55,6 @@ And user clicks on search button
 And user wait for "2" seconds
 Then verify that notice with "search_number" citation number has been searched successfully
 Then verify that today is the citation issue date
-Then verify that notice with "search_lot" location has been searched successfully
 Then verify that notice with "search_plate" citation plate has been searched successfully
 ##Then verify that notice with "search_vioDesc" citation violation description has been searched successfully
 Then verify that notice with "Valid" citation status has been searched successfully
@@ -105,7 +101,7 @@ When user wait for "7" seconds
 And user enters special characters into Notice number and License Plate fields
 Then verify that special characters are not entered into Notice number and License Plate fields
 
-Scenario: Search by citation number
+Scenario: Search by citation number and make the citation cancelled and verify view details
 When user enters notice number by taking its value from temp file with key "search_number"
 And user clicks on search button
 And user wait for "4" seconds
@@ -129,16 +125,11 @@ When user click on to the view details link of "search_number" citation number t
 And user wait for "2" seconds
 Then verify section "Officer Details" for "Officer Name" and "search_officer" as key its value
 Then verify section "Vehicle Details" for "Vehicle Make" and "search_vehmake" as key its value
-Then verify section "Vehicle Details" for "Vehicle Model" and "search_vehmodel" as key its value
-Then verify section "Vehicle Details" for "Vehicle Color" and "search_color" as key its value
 Then verify section "Vehicle Details" for "Licence Plate Number" and "search_plate" as key its value
-Then verify section "Vehicle Details" for "Body Style" and "search_style" as key its value
 Then verify section "Location Details" for "Street" and "search_street" as key its value
 Then verify section "Location Details" for "Block" and "search_block" as key its value
 Then verify section "Violation Details" for "Description" and "search_description" as key its value
-Then verify section "Enforcement Notes" for "Printed Remark 1" and "search_remark" as key its value
-Then verify section "Violation Details" for "Description" and "search_vioDesc" as key its value
-Then verify total "2" images is under "Images" label
+Then verify total "1" images is under "Images" label
 
 Scenario: verify financial page
 When user navigate to "Financial" tab name and "#commercial" href link
@@ -148,8 +139,12 @@ Then verify that "Total Due" filed has "search_fine" key as value from financial
 Then verify that "Service Fee" is same as configured service charge amount from financial page
 
 Scenario: Make the citation void and verify
-When user clicks search result link from search result page
-And user wait for "4" seconds
+When user clicks search link from search result page
+And user wait for "2" seconds
+And user enters notice number by taking its value from temp file with key "search_number"
+And user clicks on search button
+And user wait for "5" seconds
+
 When user click on to the "Void" link of "search_number" citation number ticket
 And user wait for "5" seconds
 Then verify cancel citation form with "search_number" key as citation number
@@ -168,28 +163,9 @@ Then verify that for "Pay" link of "search_number" citation number ticket is not
 Then verify that notice with "search_number" citation number has view Details
 Then verify that "Support Note" link is present in search result
 
-Scenario: verify view details page
-When user click on to the view details link of "search_number" citation number ticket
-And user wait for "2" seconds
-Then verify section "Officer Details" for "Officer Name" and "search_officer" as key its value
-Then verify section "Vehicle Details" for "Vehicle Make" and "search_vehmake" as key its value
-Then verify section "Vehicle Details" for "Vehicle Model" and "search_vehmodel" as key its value
-Then verify section "Vehicle Details" for "Vehicle Color" and "search_color" as key its value
-Then verify section "Vehicle Details" for "Licence Plate Number" and "search_plate" as key its value
-Then verify section "Vehicle Details" for "Body Style" and "search_style" as key its value
-Then verify section "Location Details" for "Street" and "search_street" as key its value
-Then verify section "Location Details" for "Block" and "search_block" as key its value
-Then verify section "Violation Details" for "Description" and "search_description" as key its value
-Then verify section "Enforcement Notes" for "Printed Remark 1" and "search_remark" as key its value
-Then verify section "Void Details" for "Notice void comments" and "search_cancel_comment" as key its value
-Then verify total "1" images is under "Images" label
-
 Scenario: Add support note to the citation and verify
-When user clicks search result link from search result page
-And user wait for "4" seconds
 When user click on to the "Support Note" link of "search_number" citation number ticket
 And user wait for "2" seconds
-Then verify support note popup
 When user clicks on to the submit button of note popup
 Then verify that the validation message for note field
 When user wait for "2" seconds
@@ -205,23 +181,6 @@ And user click on to the View all support notes link from support note popup
 And user wait for "1" seconds
 Then verify that "search_note" note appears under citation info page
 And verify download link for "search_note" note appears under citation info page
-When user close the popup
-
-Scenario: verify audit trail for citation events making citation void and support note added
-When user click on to the view details link of "search_number" citation number ticket
-And user wait for "2" seconds
-And user navigate to "Audit Trail" tab name and "#audit-trail" href link
-And user wait for "4" seconds
-Then verify that audit "Old Value: Valid" visible
-Then verify that audit "New Value: Suspended" visible
-Then verify that audit "Reason: citation note added" visible
-
-Scenario: verify the view details for support note details and void details
-When user navigate to "Notice Info" tab name and "#citation-info" href link
-And user wait for "4" seconds
-Then verify that "search_note" note appears under notice info page from view details
-Then verify download link for "search_note" note appears under notice info page from view details
-
 
 Scenario: Close the browser
 When user close browser

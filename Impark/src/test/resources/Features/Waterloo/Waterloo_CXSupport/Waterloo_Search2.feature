@@ -1,7 +1,7 @@
 #Author: Bhavik Chondager
-
+@Demo
 @waterloo
-@Search
+@Search2
 Feature: Two citations associated with same plate number and admin adds discount and pay for these two citations
 
 @datasetup
@@ -87,9 +87,9 @@ Then verify that notice with "search1_number" citation number has "search1_vioDe
 Then verify that notice with "search1_number" citation number has "search1_fine" Original Fine
 Then verify that "Add Discount" link is present in search result
 Then verify that "Void" link is present in search result
-Then verify that "Support Notes" link is present in search result
+Then verify that "Support Note" link is present in search result
 Then verify that "Pay" link is present in search result
-Then verify that "View Details" link is present in search result
+Then verify that notice with "search1_number" citation number has view Details
 Then verify that "search1_number" is the value for notice number field after search
 Then verify that "search2_number" is the value for notice number field after search
 Then verify sitename in the search result
@@ -100,9 +100,9 @@ Then verify that notice with "search2_number" citation number has "search2_vioDe
 Then verify that notice with "search2_number" citation number has "search2_fine" Original Fine
 Then verify that "Add Discount" link is present in search result
 Then verify that "Void" link is present in search result
-Then verify that "Support Notes" link is present in search result
+Then verify that "Support Note" link is present in search result
 Then verify that "Pay" link is present in search result
-Then verify that "View Details" link is present in search result
+Then verify that notice with "search2_number" citation number has view Details
 Then verify that "search2_number" is the value for notice number field after search
 Then verify that Total Amount is the summation of "search1_fine" and "search2_fine" 
 
@@ -119,8 +119,8 @@ When user clicks on to the make payment button
 Then verify the message "Enter card number" visible on make payment screen
 Then verify the message "Enter expiry" visible on make payment screen
 Then verify the message "Enter cvc" visible on make payment screen
+
 When user enters "bhavik.chondager@parkloyalty.com" for "Email Address" placeholder for payment
-##( issue without email payment is not wokring, email is also not mandatory  )
 And user enters card details
 And user clicks on to the make payment button
 And user wait for "5" seconds

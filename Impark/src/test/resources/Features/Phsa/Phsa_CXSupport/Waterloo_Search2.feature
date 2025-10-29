@@ -1,8 +1,8 @@
 #Author: Bhavik Chondager
 @Demo
 @waterloo
-@Search6
-Feature: For two citations add support note verify support note
+@Search2
+Feature: Two citations associated with same plate number and admin adds discount and pay for these two citations
 
 @datasetup
 Scenario: setup for test
@@ -104,37 +104,38 @@ Then verify that "Support Note" link is present in search result
 Then verify that "Pay" link is present in search result
 Then verify that notice with "search2_number" citation number has view Details
 Then verify that "search2_number" is the value for notice number field after search
-Then verify that Total Amount is the summation of "search1_fine" and "search2_fine"
+Then verify that Total Amount is the summation of "search1_fine" and "search2_fine" 
 
-Scenario: Admin add support note for multiple citation
-And user click on to the "Support Note" button from top bar
+Scenario: Admin pay for multiple citation at a time
+When user click on to the "Pay" button from top bar
+And user wait for "5" seconds
+Then verify that page has "Plate number" label and "search_plate" as key its value
+Then verify that page has "Notice number" label and "search1_number" as key its value
+Then verify that page has "Notice number" label and "search2_number" as key its value
+Then verify that page has "Payment amount" label and "search1_fine" as key its value
+Then verify that page has "Payment amount" label and "search2_fine" as key its value
+Then verify the payment amount is total of "search1_fine" and "search2_fine" for "2" tickets from payment page
+When user clicks on to the make payment button
+Then verify the message "Enter card number" visible on make payment screen
+Then verify the message "Enter expiry" visible on make payment screen
+Then verify the message "Enter cvc" visible on make payment screen
+When user enters "bhavik.chondager@parkloyalty.com" for "Email Address" placeholder for payment
+##( issue without email payment is not wokring, email is also not mandatory  )
+And user enters card details
+And user clicks on to the make payment button
+And user wait for "5" seconds
+Then verify "Success!" label on screen
+Then verify "Payment has been posted successfully." label on screen
+Then verify that reciept id has been generated and save its value as "citation3_recieptID" into temp file
+
+Scenario: Navigate to the search screen by clicking on to the back button from payment screen
+When user click on to the back button
+And user wait for "3" seconds
+When user enters notice number by taking its value from temp file with key "search1_number" and "search2_number"
+And user clicks on search button
 And user wait for "2" seconds
-Then verify support note popup
-When user clicks on to the submit button of note popup
-Then verify that the validation message for note field
-When user wait for "2" seconds
-And user enters note and save its value as "search_note" into temp file
-And user clicks on choose file button and upload "pdf" file for note
-And user wait for "4" seconds
-Then verify that file uploaded into note section
-When user clicks on to the submit button of note popup
-Then verify note added sucess message
-When user wait for "5" seconds
-And user click on to the "Support Note" link of "search1_number" citation number ticket
-And user click on to the View all support notes link from support note popup
-And user wait for "1" seconds
-Then verify that "search_note" note appears under citation info page
-And verify download link for "search_note" note appears under citation info page
-When user close the popup
-And user wait for "1" seconds
-
-And user click on to the "Support Note" link of "search2_number" citation number ticket
-And user click on to the View all support notes link from support note popup
-And user wait for "1" seconds
-Then verify that "search_note" note appears under citation info page
-And verify download link for "search_note" note appears under citation info page
-When user close the popup
-And user wait for "1" seconds
+Then verify that notice with "search1_number" citation number has "Paid" status
+Then verify that notice with "search2_number" citation number has "Paid" status
 
 Scenario: Close the browser
 When user close browser

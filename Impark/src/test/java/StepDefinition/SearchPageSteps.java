@@ -54,6 +54,13 @@ public class SearchPageSteps extends Base
 		CurrentPage.getInstance(SearchPage.class).verifySearchCitationResultsPlate(expectedNoticeNumber);
 	}
 	
+	@Then("verify that notice with {string} location has been searched successfully")
+	public void verify_that_notice_with_location_has_been_searched_successfully(String key) throws IOException
+	{
+		String expectedNoticeNumber = PropertyUtil.getFromTempPropertyFile(path.Path.dataProperty, key);
+		CurrentPage.getInstance(SearchPage.class).verifySearchLocation(expectedNoticeNumber);
+	}
+	
 	@Then("verify that notice with {string} citation violation description has been searched successfully")
 	public void verify_that_notice_with_citation_violation_description_has_been_searched_successfully(String key) throws IOException
 	{
@@ -98,6 +105,14 @@ public class SearchPageSteps extends Base
 	{
 		CurrentPage.getInstance(SearchPage.class).verifyNoticeCountInSearchResult(count);
 	}
+	
+	@When("user click on to the view details link of {string} citation number ticket")
+	public void user_click_on_to_the_link_of_citation_number_ticket(String citationNumber) throws IOException
+	{
+		String expectedNoticeNumber = PropertyUtil.getFromTempPropertyFile(path.Path.dataProperty, citationNumber);
+		CurrentPage.getInstance(SearchPage.class).clickOnViewDetailsLinkCitationNumber(expectedNoticeNumber);
+	}
+	
 	
 	@When("user click on to the {string} link of {string} citation number ticket")
 	public void user_click_on_to_the_link_of_citation_number_ticket(String link, String citationNumber) throws IOException
@@ -241,7 +256,7 @@ public class SearchPageSteps extends Base
 		PropertyUtil.updateIntoProperty(Path.dataProperty, key, keyValue);
 	}
 	
-	@When("user enters cancel citation comments and save its value as {string} into temp file")
+	@When("user get cancel citation comments and save its value as {string} into temp file")
 	public void user_enters_cancel_citation_comments_and_save_its_value_as_into_temp_file(String key) throws IOException
 	{
 		String keyValue =CurrentPage.getInstance(SearchPage.class).cancelCitationComments();
@@ -273,8 +288,20 @@ public class SearchPageSteps extends Base
 		CurrentPage.getInstance(SearchPage.class).clickOnChooseFilenAndUpload(fileType);
 	}
 	
+	@When("user clicks on choose file button and upload {string} file for void")
+	public void user_clicks_on_choose_file_button_and_upload_file_void( String fileType ) throws AWTException
+	{
+		CurrentPage.getInstance(SearchPage.class).clickOnChooseFilenAndUpload(fileType);
+	}
+	
 	@Then("verify that file uploaded into note section")
 	public void verify_that_file_uploaded_into_note_section()
+	{
+		CurrentPage.getInstance(SearchPage.class).verifyFileHasBeenUploaded();
+	}
+	
+	@Then("verify that file uploaded into void section")
+	public void verify_that_file_uploaded_into_void_section()
 	{
 		CurrentPage.getInstance(SearchPage.class).verifyFileHasBeenUploaded();
 	}
@@ -399,6 +426,13 @@ public class SearchPageSteps extends Base
 		CurrentPage.getInstance(SearchPage.class).verifyCitationFine(keyValue, fine);
 	}
 	
+	@Then("verify that notice with {string} citation number has view Details")
+	public void verify_that_notice_with_citation_number_has_view_Details(String citation) throws IOException
+	{
+		String keyValue = PropertyUtil.getFromTempPropertyFile(Path.dataProperty, citation);
+		CurrentPage.getInstance(SearchPage.class).verifyCitationViewDetailsLink(keyValue);
+	}
+	
 	@Then("verify the message {string} visible on make payment screen")
 	public void verify_the_message_visible_on_make_payment_screen(String message)
 	{
@@ -492,5 +526,25 @@ public class SearchPageSteps extends Base
 	public void click_on_to_the_submit_button_from_add_discount_popup()
 	{
 		CurrentPage.getInstance(SearchPage.class).clickSubmitButtonFromAddDiscountPopup();
+	}
+	
+	@Then("verify that audit {string} visible")
+	public void verify_that_audit_visible(String auditDetail)
+	{
+		CurrentPage.getInstance(SearchPage.class).verifyAuditDetails(auditDetail);
+	}
+	
+	@Then("verify that {string} note appears under notice info page from view details")
+	public void verify_that_note_appears_under_notice_info_page_from_view_details(String key) throws IOException
+	{
+		String keyValue = PropertyUtil.getFromTempPropertyFile(Path.dataProperty, key);
+		CurrentPage.getInstance(SearchPage.class).verifyNoteAddedUnderNoticeInfoFromViewDetails(keyValue);
+	}
+	
+	@Then("verify download link for {string} note appears under notice info page from view details")
+	public void verify_download_link_for_note_appears_under_notice_info_page_view_details(String key) throws IOException
+	{
+		String keyValue = PropertyUtil.getFromTempPropertyFile(Path.dataProperty, key);
+		CurrentPage.getInstance(SearchPage.class).verifyDownloadUnderNoticeInfoFromViewDetails(keyValue);
 	}
 }

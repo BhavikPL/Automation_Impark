@@ -235,10 +235,10 @@ public class PaymentSearchPageSteps  extends Base
 		PropertyUtil.updateIntoProperty(Path.dataProperty, key, keyValue);
 	}
 	
-	@When("user enters cancel citation comments and save its value as {string} into temp file from payment application")
+	@When("user get cancel citation comments and save its value as {string} into temp file from payment application")
 	public void user_enters_cancel_citation_comments_and_save_its_value_as_into_temp_file_payment(String key) throws IOException
 	{
-		String keyValue =CurrentPage.getInstance(SearchPage.class).cancelCitationComments();
+		String keyValue =CurrentPage.getInstance(PaymentSearchPage.class).cancelCitationComments();
 		PropertyUtil.updateIntoProperty(Path.dataProperty, key, keyValue);
 	}
 	

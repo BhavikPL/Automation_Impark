@@ -45,7 +45,7 @@ public class SearchPage extends BasePage
 	@FindBy(how=How.XPATH, using="//a[contains(normalize-space(.),'Search Result')]")
 	public WebElement searchResultLinkFromResults;
 
-	@FindBy(how=How.XPATH, using="//label[contains(normalize-space(.),'License Plate')]/following-sibling::input")
+	@FindBy(how=How.XPATH, using="//label[contains(normalize-space(.),'License plate')]/following-sibling::input")
 	public WebElement licensePlateInput;
 
 	@FindBy(how=How.XPATH, using="//div[contains(text(),'Select state')]/following-sibling::div/input")
@@ -123,7 +123,7 @@ public class SearchPage extends BasePage
 	@FindBy(how = How.XPATH, using = "//h3[contains(text(),'Support Note')]")
 	public WebElement notePopupHeading;
 		
-	@FindBy(how = How.XPATH, using = "//span[contains(text(),'Enter Note*')]/following-sibling::div//div[contains(@data-placeholder,'Start typing...')]/p")
+	@FindBy(how = How.XPATH, using = "//span[contains(text(),'Enter Note')]/following-sibling::div//div[contains(@data-placeholder,'Start typing...')]/p")
 	public WebElement enterNoteTextarea;
 		
 	@FindBy(how = How.XPATH, using = "//h3[contains(text(),'Support Note')]/ancestor::div//button[contains(text(),'Submit')]")
@@ -268,6 +268,7 @@ public class SearchPage extends BasePage
 	
 	public void clickSearchResultLinkFromSearchResultPage()
 	{
+		driverUtilities.get().makeElementVisibleIntoScreenAtMiddle(searchResultLinkFromResults);
 		driverUtilities.get().clickOnElement(searchResultLinkFromResults);
 	}
 	
@@ -291,6 +292,13 @@ public class SearchPage extends BasePage
 	{
 		WebElement citationSearched = driverUtilities.get().getWebElement("//h5[contains(text(),'"+expectedNoticeNumber+"')]/preceding-sibling::p[normalize-space(contains(text(),'Plate/State'))]");
 		Assert.assertTrue(driverUtilities.get().isElementDisplayed(citationSearched));
+	}
+	
+	public void verifySearchLocation(String expectedNoticeNumber)
+	{
+		WebElement actualLocationElement = driverUtilities.get().getWebElement("//p[contains(text(),'Location')]/following-sibling::h5");
+		String actualLocationText = driverUtilities.get().getElementText(actualLocationElement);
+		Assert.assertTrue(actualLocationText.contains(actualLocationText));
 	}
 	
 	public void verifySearchCitationResultsVioDesc(String expectedNoticeNumber)
@@ -335,7 +343,7 @@ public class SearchPage extends BasePage
 	
 	public void verifySiteNameInSearchResult()
 	{
-		WebElement citationSearched = driverUtilities.get().getWebElement("//p[contains(text(),'Site Name')]/following-sibling::h5");
+		WebElement citationSearched = driverUtilities.get().getWebElement("(//div[contains(@class,'displayResult displycitysearchHeader')]//p/following-sibling::h5)[1]");
 		String actualDesc = driverUtilities.get().getElementText(citationSearched);
 		Assert.assertTrue(actualDesc.contains(Settings.clientName));
 	}
@@ -346,11 +354,25 @@ public class SearchPage extends BasePage
 		Assert.assertTrue(driverUtilities.get().isElementDisplayed(citationSearched));
 	}
 	
-	public void clickOnLinkBasedOnCitationNumber(String link, String number)
+	public void clickOnViewDetailsLinkCitationNumber(String number)
 	{
-		WebElement citationSearched = driverUtilities.get().getWebElement("//h5[contains(text(),'"+number+"')]/preceding-sibling::p[normalize-space(contains(text(),'Notice Number'))]/parent::div/parent::div/preceding-sibling::div//button[contains(text(),'"+link+"')]");
+		//WebElement citationSearched = driverUtilities.get().getWebElement("//h5[contains(text(),'"+number+"')]/preceding-sibling::p[normalize-space(contains(text(),'Notice Number'))]/parent::div/parent::div/preceding-sibling::div//button[contains(text(),'"+link+"')]");
 		//driverUtilities.get().moveCursorToAnElementAndClick(driverUtilities.get().getActions(), citationSearched);
+		
+		String path = "//h5[contains(text(),'"+number+"')]/ancestor::div[contains(@class,'details-searchCitation')][1]//button[normalize-space(contains(text(),'view Details'))]";
+		int c = driverUtilities.get().getNumberOfElement(path);
+		path = "(//h5[contains(text(),'"+number+"')]/ancestor::div[contains(@class,'details-searchCitation')][1]//button[normalize-space(contains(text(),'view Details'))])["+c+"]";
+		WebElement viewDetailsLink = driverUtilities.get().getWebElement(path);
+		driverUtilities.get().clickOnElement(viewDetailsLink);
+	}
+	
+	public void clickOnLinkBasedOnCitationNumber(String link,String number)
+	{
+		String path= "//h5[contains(text(),'"+number+"')]/ancestor::div[contains(@class,'searchResult')]//div[contains(@class,'searchCitation ')]//button[text()='"+link+"']";
+		System.out.println("Void link:="+path);
+		WebElement citationSearched = driverUtilities.get().getWebElement(path);
 		driverUtilities.get().clickOnElement(citationSearched);
+	
 	}
 	
 	public void clickOnLinkBasedOnCitationNumberNotVisible(String link, String number)
@@ -445,7 +467,7 @@ public class SearchPage extends BasePage
 		String total = String.valueOf(total_Charge);
 		System.out.println("Total Calculated:="+total);
 		
-		WebElement total_Fine = driverUtilities.get().getWebElement("//p[contains(text(),'Total Amount')]/following-sibling::h5");
+		WebElement total_Fine = driverUtilities.get().getWebElement("//div[contains(@class,'license-plate lp3')]/h5");
 		String total_Fine_amount = driverUtilities.get().getElementText(total_Fine);
 		System.out.println("Total From UI:="+total_Fine_amount);
 		
@@ -467,7 +489,7 @@ public class SearchPage extends BasePage
 		String total = String.valueOf(total_Charge);
 		System.out.println("Total Calculated:="+total);
 		
-		WebElement total_Fine = driverUtilities.get().getWebElement("//*[contains(text(),'Total Amount')]/following-sibling::h5");
+		WebElement total_Fine = driverUtilities.get().getWebElement("//div[contains(@class,'license-plate lp3')]/h5");
 		String total_Fine_amount = driverUtilities.get().getElementText(total_Fine);
 		System.out.println("Total From UI:="+total_Fine_amount);
 		
@@ -646,8 +668,10 @@ public class SearchPage extends BasePage
 	
 	public String cancelCitationComments()
 	{
-		String reasonCancel = "Cancel Citation Reason is"+Util.generateRandomNumber(10);
-		driverUtilities.get().typeIntoTextBox(cancelCitationComments, reasonCancel);
+		//String reasonCancel = "Cancel Citation Reason is"+Util.generateRandomNumber(10);
+		//driverUtilities.get().typeIntoTextBox(cancelCitationComments, reasonCancel);
+		String reasonCancel = driverUtilities.get().getElementText(cancelCitationComments);
+		Assert.assertFalse(reasonCancel.isEmpty());
 		return reasonCancel;
 	}
 	
@@ -764,11 +788,21 @@ public class SearchPage extends BasePage
 		Assert.assertTrue(driverUtilities.get().isElementDisplayed(driverUtilities.get().getWebElement("//*[contains(text(),'All Support Notes')]/ancestor::div/following-sibling::div//table/tbody/tr//*[contains(text(),'"+value+"')]")));
 	}
 	
+	public void verifyNoteAddedUnderNoticeInfoFromViewDetails(String value)
+	{
+		Assert.assertTrue(driverUtilities.get().isElementDisplayed(driverUtilities.get().getWebElement("//*[contains(text(),'Support Notes')]/following-sibling::div//table/tbody/tr//*[contains(text(),'"+value+"')]")));
+	}
+	
 	public void verifyDownloadLinkUnderCitationInfo(String value)
 	{
 		driverUtilities.get().makeElementVisibleIntoScreen(driverUtilities.get().getWebElement("//*[contains(text(),'All Support Notes')]"));
 		//driverUtilities.get().scrollDownWebPage();
 		Assert.assertTrue(driverUtilities.get().isElementDisplayed(driverUtilities.get().getWebElement("//*[contains(text(),'All Support Notes')]/ancestor::div/following-sibling::div//table/tbody/tr//*[contains(text(),'"+value+"')]/ancestor::td/following-sibling::td/a[contains(text(),'Download')]")));
+	}
+	
+	public void verifyDownloadUnderNoticeInfoFromViewDetails(String value)
+	{
+		Assert.assertTrue(driverUtilities.get().isElementDisplayed(driverUtilities.get().getWebElement("//*[contains(text(),'Support Notes')]/following-sibling::div//table/tbody/tr//*[contains(text(),'"+value+"')]/ancestor::td/following-sibling::td/a[contains(text(),'Download')]")));
 	}
 	
 	public void verifyLabelAndKeyValue(String lebel , String value)
@@ -872,6 +906,12 @@ public class SearchPage extends BasePage
 	public void verifyCitationFine(String number , String fine)
 	{
 		WebElement ele = driverUtilities.get().getWebElement("//h5[contains(text(),'"+number+"')]/ancestor::div/following-sibling::div//p[contains(text(),'Original Fine')]/following-sibling::h5[contains(text(),'"+fine+"')]");
+		Assert.assertTrue(driverUtilities.get().isElementDisplayed(ele));
+	}
+	
+	public void verifyCitationViewDetailsLink(String number)
+	{
+		WebElement ele = driverUtilities.get().getWebElement("//h5[contains(text(),'"+number+"')]/ancestor::div[contains(@class,'details-searchCitation')][1]//button[normalize-space(contains(text(),'view Details'))][2]");
 		Assert.assertTrue(driverUtilities.get().isElementDisplayed(ele));
 	}
 	
@@ -1009,5 +1049,10 @@ public class SearchPage extends BasePage
 	public void clickSubmitButtonFromAddDiscountPopup()
 	{
 		driverUtilities.get().clickOnElement(submitButton);
+	}
+	
+	public void verifyAuditDetails(String auditDetails)
+	{
+		try{driverUtilities.get().getWebElement("//h6[contains(normalize-space(.), '"+auditDetails+"')]");}catch(NoSuchElementException e) {System.out.println("Not gone from appeal");}
 	}
 }

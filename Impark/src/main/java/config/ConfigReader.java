@@ -71,9 +71,9 @@ public class ConfigReader extends Base
 		{
 			configFilePath = new File(Path.ManhattanConfigFilePath);
 		}
-		if( getEnvDetails.equalsIgnoreCase("IslandRailRoad") )
+		if( getEnvDetails.equalsIgnoreCase("Phsa") )
 		{
-			configFilePath = new File(Path.IslandRailRoadConfigFilePath);
+			configFilePath = new File(Path.PhsaConfigFilePath);
 		}
 		if( getEnvDetails.equalsIgnoreCase("Waterloo") )
 		{

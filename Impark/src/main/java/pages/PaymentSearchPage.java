@@ -645,13 +645,6 @@ public class PaymentSearchPage extends BasePage
 			return reason;
 		}
 		
-		public String cancelCitationComments()
-		{
-			String reasonCancel = "Cancel Citation Reason is"+Util.generateRandomNumber(10);
-			driverUtilities.get().typeIntoTextBox(cancelCitationComments, reasonCancel);
-			return reasonCancel;
-		}
-		
 		public void clickCancelCitationSubmitButton()
 		{
 			driverUtilities.get().clickOnElement(cancelCitationSubmitButton);
@@ -797,6 +790,15 @@ public class PaymentSearchPage extends BasePage
 			{
 				Assert.assertTrue(driverUtilities.get().isElementDisplayed(driverUtilities.get().getWebElement("//*[contains(normalize-space(.), '"+lebel+"')]/following-sibling::*[contains(normalize-space(.),'"+value+"')]")));
 			}
+		}
+		
+		public String cancelCitationComments()
+		{
+			//String reasonCancel = "Cancel Citation Reason is"+Util.generateRandomNumber(10);
+			//driverUtilities.get().typeIntoTextBox(cancelCitationComments, reasonCancel);
+			String reasonCancel = driverUtilities.get().getElementText(cancelCitationComments);
+			Assert.assertFalse(reasonCancel.isEmpty());
+			return reasonCancel;
 		}
 		
 		public void verifyPaymentAmount(String val1 , String val2, String ticketCounts)
