@@ -19,7 +19,6 @@ Then verify that Search For Notices page opens
 When user enters "<citation_number>" notice number
 And user clicks on search button
 And user wait for "4" seconds
-#Then verify that notice with "<citation_number>" citation number has "<violation>" violation
 Then verify that notice with "<citation_number>" citation number has "<violation_type>" violation type
 Then verify that notice with "<citation_number>" citation number has "<lot_branch>" BranchLot
 When user click on to the view details link of "<citation_number>" citation number
@@ -31,7 +30,7 @@ And user wait for "2" seconds
 
 Examples:
 | citation_number | violation_type | lot_branch 					| code | Description 						|
-| 6418306         | 4 - Restricted | 01-199     					|	PTNT |	Patient Parking Only	|
+| 6422695         | 4 - Restricted | 01-199     					|	PTNT |	Patient Parking Only	|
 | 6418694         | 4 - Restricted | 01-199     					|	PTNT |	Patient Parking Only	|
 | 6418695         | 1 - No record of payment | 01-202     |PLAT	 |  Not Registered        |
 

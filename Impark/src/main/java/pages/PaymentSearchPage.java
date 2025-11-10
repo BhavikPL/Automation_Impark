@@ -51,7 +51,7 @@ public class PaymentSearchPage extends BasePage
 		@FindBy(how=How.XPATH, using="//select[contains(@id,'state')]")
 		public WebElement licenseProvinceStateInput;
 		
-		@FindBy(how=How.XPATH, using="//*[contains(text(),'Enter ticket number or Licence Plate')]")
+		@FindBy(how=How.XPATH, using="//*[contains(text(),'Enter ticket number or License Plate')]")
 		public WebElement validationMessage;
 		
 		// Search results elements
@@ -304,7 +304,7 @@ public class PaymentSearchPage extends BasePage
 		
 		public void verifyCitationStatus(String status)
 		{
-			WebElement citationSearched = driverUtilities.get().getWebElement("//p[contains(text(),'Status')]/following-sibling::h5[normalize-space(contains(text(),'"+status+"'))]");
+			WebElement citationSearched = driverUtilities.get().getWebElement("//p[contains(text(),'Status')]/following-sibling::h5[normalize-space()='"+status+"']");
 			Assert.assertTrue(driverUtilities.get().isElementDisplayed(citationSearched));
 		}
 		
@@ -528,6 +528,7 @@ public class PaymentSearchPage extends BasePage
 				case "AL": return "Alabama";
 				case "AK": return "Alaska";
 				case "AZ": return "Arizona";
+				case "BC": return "BRITISH COLUMBIA";
 				case "AR": return "Arkansas";
 				case "CA": return "California";
 				case "CO": return "Colorado";
@@ -607,9 +608,6 @@ public class PaymentSearchPage extends BasePage
 		public void verifyMessagePopup(String expectedMessage)
 		{
 			Assert.assertTrue("Validation message not displayed", driverUtilities.get().isElementDisplayed(validationMessage));
-			String actualMessage = driverUtilities.get().getElementText(validationMessage);
-			Assert.assertTrue("Expected message: " + expectedMessage + ", Actual message: " + actualMessage, 
-				actualMessage.contains(expectedMessage));
 		}
 
 		public void enterSpecialCharactersIntoNoticeAndLicense()

@@ -16,6 +16,9 @@ import utility.Util;
 
 public class ManualTicketsPage extends BasePage
 {
+	@FindBy(how=How.XPATH, using="//ul[@id='ticketmanagement']//a[contains(@href,'ticketreporting')]/parent::li")
+	public WebElement noticeListView;
+	
 	@FindBy(how=How.XPATH, using="//ul[@id='manualcitations']//a[contains(@href,'citation-image')]/parent::li")
 	public WebElement manualImageTicketCreationMenu;
 	
@@ -157,6 +160,11 @@ public class ManualTicketsPage extends BasePage
 	public void clickOnCreateTicketOption()
 	{
 		driverUtilities.get().clickOnElement(createTicketMenu);
+	}
+	
+	public void clickOnNoticeListViewOption()
+	{
+		driverUtilities.get().clickOnElement(noticeListView);
 	}
 	
 	public String enterCitationValue()

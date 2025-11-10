@@ -16,6 +16,12 @@ public class HomePageSteps extends Base
 		CurrentPage.getInstance(HomePage.class).extendsTicketManagement();
 	}
 	
+	@When("user extends notice management menu")
+	public void ectends_notice_management_menu()
+	{
+		CurrentPage.getInstance(HomePage.class).extendsNoticeManagement();
+	}
+	
 	@When("user extends manual tickets menu")
 	public void user_extends_manual_tickets_menu()
 	{

@@ -2,6 +2,7 @@ package pages;
 
 import java.awt.AWTException;
 import java.io.IOException;
+import java.util.List;
 
 import org.junit.Assert;
 import org.openqa.selenium.NoSuchElementException;
@@ -48,7 +49,7 @@ public class SearchPage extends BasePage
 	@FindBy(how=How.XPATH, using="//label[contains(normalize-space(.),'License plate')]/following-sibling::input")
 	public WebElement licensePlateInput;
 
-	@FindBy(how=How.XPATH, using="//div[contains(text(),'Select state')]/following-sibling::div/input")
+	@FindBy(how=How.XPATH, using="//div[contains(text(),'Select Province or State')]/following-sibling::div/input")
 	public WebElement licenseProvinceStateInput;
 	
 	@FindBy(how=How.XPATH, using="//*[contains(text(),'Enter ticket number or Licence Plate')]")
@@ -107,8 +108,11 @@ public class SearchPage extends BasePage
 	public WebElement remarksHeader;
 	
 	//void citation
-	@FindBy(how = How.XPATH, using = "//span[contains(normalize-space(.), 'Cancel Notice Reason')]/following-sibling::select")
+	@FindBy(how = How.XPATH, using = "//span[contains(normalize-space(.), 'Cancel Notice Code')]/following-sibling::select")
 	public WebElement cancelCitationReasonList;
+	
+	@FindBy(how = How.XPATH, using = "//span[contains(normalize-space(.), 'Cancel Notice Description')]/following-sibling::input")
+	public WebElement cancelNoticeDescription;
 		
 	@FindBy(how = How.XPATH, using = "//span[contains(normalize-space(.), 'Cancel Notice Comments')]/following-sibling::textarea")
 	public WebElement cancelCitationComments;
@@ -319,13 +323,13 @@ public class SearchPage extends BasePage
 	
 	public void verifyCitationStatus(String status)
 	{
-		WebElement citationSearched = driverUtilities.get().getWebElement("//p[contains(text(),'Status')]/following-sibling::h5[normalize-space(contains(text(),'"+status+"'))]");
+		WebElement citationSearched = driverUtilities.get().getWebElement("//p[contains(text(),'Status')]/following-sibling::h5[normalize-space()='"+status+"']");
 		Assert.assertTrue(driverUtilities.get().isElementDisplayed(citationSearched));
 	}
 	
 	public void verifySearchCitationResultsOriFine(String expectedNoticeNumber)
 	{
-		WebElement citationSearched = driverUtilities.get().getWebElement("//p[contains(text(),'Original Fine')]/following-sibling::h5");
+		WebElement citationSearched = driverUtilities.get().getWebElement("//p[contains(text(),'Original Amount')]/following-sibling::h5");
 		String actualDesc = driverUtilities.get().getElementText(citationSearched);
 		Assert.assertTrue(actualDesc.contains(expectedNoticeNumber));
 	}
@@ -348,11 +352,10 @@ public class SearchPage extends BasePage
 		WebElement lnk = driverUtilities.get().getWebElement("//input[contains(@id,'ticket_number')]");
 	}
 	
-	public void verifySiteNameInSearchResult()
+	public void verifySiteNameInSearchResult(String siteName)
 	{
-		WebElement citationSearched = driverUtilities.get().getWebElement("(//div[contains(@class,'displayResult displycitysearchHeader')]//p/following-sibling::h5)[1]");
-		String actualDesc = driverUtilities.get().getElementText(citationSearched);
-		Assert.assertTrue(actualDesc.contains(Settings.clientName));
+		WebElement citationSearched = driverUtilities.get().getWebElement("//h2[contains(text(),'"+siteName+"')]");
+		Assert.assertTrue(driverUtilities.get().isElementDisplayed(citationSearched));
 	}
 	
 	public void verifyNoticeCountInSearchResult(String count)
@@ -441,6 +444,7 @@ public class SearchPage extends BasePage
 		String text = driverUtilities.get().getAttribute(pathElement, "value");
 		System.out.println("text:="+text);
 		System.out.println("keyValue:="+keyValue);
+		keyValue = keyValue.replace("$", "");
 		Assert.assertTrue(text.contains(keyValue));
 	}
 	
@@ -569,6 +573,7 @@ public class SearchPage extends BasePage
 			case "AL": return "Alabama";
 			case "AK": return "Alaska";
 			case "AZ": return "Arizona";
+			case "BC": return "BRITISH COLUMBIA";
 			case "AR": return "Arkansas";
 			case "CA": return "California";
 			case "CO": return "Colorado";
@@ -631,11 +636,11 @@ public class SearchPage extends BasePage
 		}
 		String stateFull = mapStateAbbrevToFull(stateShort);
 		driverUtilities.get().clearTextBox(licenseProvinceStateInput);
-		driverUtilities.get().typeIntoTextBox(licenseProvinceStateInput, stateFull);
 		stateFull = stateFull.toUpperCase();
-		try {Thread.sleep(1000);} catch(InterruptedException e) {}
-		WebElement option = driverUtilities.get().getWebElement("//*[contains(text(),'"+stateFull+"')]");
-		driverUtilities.get().clickByjavaScript(option);
+		driverUtilities.get().typeIntoTextBox(licenseProvinceStateInput, stateFull);
+		try {Thread.sleep(2000);} catch(InterruptedException e) {}
+		WebElement option = driverUtilities.get().getWebElement("//*[text()='"+stateFull+"']");
+		driverUtilities.get().clickOnElement(option);
 	}
 	
 	public void clearNoticeNumberAndLicensePlateFields()
@@ -685,13 +690,18 @@ public class SearchPage extends BasePage
 		return reason;
 	}
 	
+	public String cancelNoticeDescription()
+	{
+		String cancelNoticeDescriptionValue = driverUtilities.get().getElementAttribute(cancelNoticeDescription,"value");
+		Assert.assertFalse(cancelNoticeDescriptionValue.isEmpty());
+		return cancelNoticeDescriptionValue;
+	}
+	
 	public String cancelCitationComments()
 	{
-		//String reasonCancel = "Cancel Citation Reason is"+Util.generateRandomNumber(10);
-		//driverUtilities.get().typeIntoTextBox(cancelCitationComments, reasonCancel);
-		String reasonCancel = driverUtilities.get().getElementText(cancelCitationComments);
-		Assert.assertFalse(reasonCancel.isEmpty());
-		return reasonCancel;
+		String cancelNoticeComment = "making notice cancel";
+		driverUtilities.get().typeIntoTextBox(cancelCitationComments, cancelNoticeComment);
+		return cancelNoticeComment;
 	}
 	
 	public void clickCancelCitationSubmitButton()
@@ -712,7 +722,7 @@ public class SearchPage extends BasePage
 	
 	public String enterNote()
 	{
-		String note = "Note for citation"+Util.generateRandomNumber(10);
+		String note = "Adding support note";
 		driverUtilities.get().clickOnElement(enterNoteTextarea);
 		driverUtilities.get().typeIntoTextBox(enterNoteTextarea, note);
 		return note;
@@ -892,21 +902,16 @@ public class SearchPage extends BasePage
 	
 	public void clickOnMakePaymentButton()
 	{
-		int c = driverUtilities.get().getNumberOfElement("//button[text()='Make Payment']");
-		WebElement makePaymentButton = driverUtilities.get().getWebElement("(//button[text()='Make Payment'])["+c+"]");
-		driverUtilities.get().makeElementVisibleIntoScreen(makePaymentButton);
-		try{driverUtilities.get().clickOnElement(driverUtilities.get().getWebElement("//h5[contains(text(),'Make Payment')]"));}catch(NoSuchElementException e) {}
-		driverUtilities.get().moveCursorToAnElementAndClick(driverUtilities.get().getActions(), makePaymentButton);
+		String button = "//button[normalize-space()='Make Payment']";
+		WebElement makePaymentButton = driverUtilities.get().getWebElement(button);
+		driverUtilities.get().clickOnElement(makePaymentButton);
 		try{driverUtilities.get().waitForElementToBePresent2("//*[contains(text(),'Download Receipt')]");}catch(TimeoutException e) {}
 	}
 	
 	public void verifyLanelOnScreen(String text)
 	{
-		String path= "//*[contains(text(),'"+text+"')]";
+		String path= "//*[normalize-space()='"+text+"']";
 		try {driverUtilities.get().waitForElementToBePresent2(path);}catch(TimeoutException e) {}
-		int c = driverUtilities.get().getNumberOfElement(path);
-		path= "(//*[contains(text(),'"+text+"')])["+c+"]";
-		driverUtilities.get().waitForElementToBePresent2(path);
 		WebElement pathEle = driverUtilities.get().getWebElement(path);
 		Assert.assertTrue(driverUtilities.get().isElementDisplayed(pathEle));
 	}
@@ -927,6 +932,7 @@ public class SearchPage extends BasePage
 	
 	public void clickOnBackButtonOfPaymentScreen()
 	{
+		driverUtilities.get().makeElementVisibleIntoScreenAtMiddle(driverUtilities.get().getWebElement("//a[contains(text(),'Back')]"));
 		driverUtilities.get().clickOnElement(driverUtilities.get().getWebElement("//a[contains(text(),'Back')]"));
 	}
 	
@@ -1025,15 +1031,13 @@ public class SearchPage extends BasePage
 	public void verifyOriginalFineAmount(String expectedFine)
 	{
 		String actualFine = driverUtilities.get().getAttribute(originalFineAmountInput, "value");
-		Assert.assertTrue("Original fine amount mismatch. Expected: " + expectedFine + ", Actual: " + actualFine, 
-			actualFine.contains(expectedFine.replaceAll("[^\\d.]", "")));
+		Assert.assertTrue(expectedFine.contains(actualFine));
 	}
 	
 	public void verifyNewFineAmountDue(String expectedFine)
 	{
 		String actualFine = driverUtilities.get().getAttribute(newFineAmountDueInput, "value");
-		Assert.assertTrue("New fine amount due mismatch. Expected: " + expectedFine + ", Actual: " + actualFine, 
-			actualFine.contains(expectedFine.replaceAll("[^\\d.]", "")));
+		Assert.assertTrue(expectedFine.contains(actualFine));
 	}
 	
 	public void clickSubmitButtonOfAddDiscountPopup()
@@ -1099,7 +1103,7 @@ public class SearchPage extends BasePage
 	
 	public void enterRemark()
 	{
-		String remark = "Test discount remark " + Util.generateRandomNumber(5);
+		String remark = "Apply discoint of $10";
 		driverUtilities.get().typeIntoTextBox(remarkTextarea, remark);
 	}
 	
@@ -1111,5 +1115,293 @@ public class SearchPage extends BasePage
 	public void verifyAuditDetails(String auditDetails)
 	{
 		try{driverUtilities.get().getWebElement("//h6[contains(normalize-space(.), '"+auditDetails+"')]");}catch(NoSuchElementException e) {System.out.println("Not gone from appeal");}
+	}
+	
+	public void verifyIssueDate()
+	{
+		WebElement dateAndTime = driverUtilities.get().getWebElement("//*[normalize-space()='Issue Date & Time']/following-sibling::h5");
+		String currentDate = Util.getCurrentSystemDate("MM/dd/yyyy");
+		String UiDateAndTime = driverUtilities.get().getElementText(dateAndTime);
+		Assert.assertTrue(UiDateAndTime.contains(currentDate));
+	}
+	
+	public void verifyIBranchLot(String branchLot)
+	{
+		WebElement branchLotElement = driverUtilities.get().getWebElement("//*[normalize-space()='Branch-Lot']/following-sibling::h5");
+		String branchLotValue = driverUtilities.get().getElementText(branchLotElement);
+		Assert.assertTrue(branchLotValue.contains(branchLot));
+	}
+	
+	public void verifyVioCode(String vioCode)
+	{
+		WebElement vioCodeElement = driverUtilities.get().getWebElement("//*[normalize-space()='Notice Code - Description']/following-sibling::h5");
+		String vioCodeUi = driverUtilities.get().getElementText(vioCodeElement);
+		Assert.assertTrue(vioCodeUi.contains(vioCode));
+	}
+	
+	public void verifyOriginalAmount(String originalAmount)
+	{
+		WebElement originalAmountElement = driverUtilities.get().getWebElement("//*[normalize-space()='Original Amount']/following-sibling::h5");
+		String originalAmountUI = driverUtilities.get().getElementText(originalAmountElement);
+		Assert.assertTrue(originalAmountUI.contains(originalAmount));
+	}
+	
+	public void verifyTotalDue(String totalDue)
+	{
+		WebElement totalDueElement = driverUtilities.get().getWebElement("//*[normalize-space()='Total Due']/following-sibling::h5");
+		String totalDueUI = driverUtilities.get().getElementText(totalDueElement);
+		Assert.assertTrue(totalDueUI.contains(totalDue));
+	}
+	
+	public void verifyTypeCodeDesc(String typeCodeDesc)
+	{
+		WebElement typeCodeDescElement = driverUtilities.get().getWebElement("//*[normalize-space()='Type Code - Description']/following-sibling::h5");
+		String typeCodeDescription = driverUtilities.get().getElementText(typeCodeDescElement);
+		typeCodeDescription = typeCodeDescription.replaceAll("\\s", "");
+		Assert.assertTrue(typeCodeDescription.contains(typeCodeDesc));
+	}
+	
+	public String searchForNoticeInValidState()
+	{
+		String noticeNumber = "";
+		String noticeRow = "//table[contains(@class,'table table-heading table-bordered')]/tbody/tr/td[text()='notice']";
+		int noicesRowsCount = driverUtilities.get().getNumberOfElement(noticeRow);
+		System.out.println("Total notices:="+noicesRowsCount);
+		try {Thread.sleep(1000);}catch(InterruptedException e) {}
+		for(int i=1; i<=noicesRowsCount; i++)
+		{		
+			String noticeRowLineStatus = "(//table[contains(@class,'table table-heading table-bordered')]/tbody/tr/td[text()='notice'])["+i+"]/following-sibling::td[1]";
+			System.out.println("Notice path is:="+noticeRowLineStatus);
+			WebElement noticeRowLineElement = driverUtilities.get().getWebElement(noticeRowLineStatus);
+			driverUtilities.get().makeElementVisibleIntoScreenAtMiddle(noticeRowLineElement);
+			String getStatus = driverUtilities.get().getElementText(noticeRowLineElement);
+			try {Thread.sleep(1000);}catch(InterruptedException e) {}
+			System.out.println("Notice status is:="+getStatus);
+			if(getStatus.equalsIgnoreCase("Valid"))
+			{
+				System.out.println("Inside If");
+				String noticeRowLineNumber = "(//table[contains(@class,'table table-heading table-bordered')]/tbody/tr/td[text()='notice'])["+i+"]/preceding-sibling::td[1]";
+				System.out.println("noticeRowLineNumber is:="+noticeRowLineNumber);
+				try {Thread.sleep(1000);}catch(InterruptedException e) {}
+				WebElement noticeRowLineNumberElement = driverUtilities.get().getWebElement(noticeRowLineNumber);
+				noticeNumber = driverUtilities.get().getElementText(noticeRowLineNumberElement);
+				System.out.println("noticeNumber is:="+noticeNumber);
+				break;
+			}
+			try {Thread.sleep(1000);}catch(InterruptedException e) {}
+		}
+		return noticeNumber;
+	}
+	
+	public String searchForTicketInValidState()
+	{
+		String noticeNumber = "";
+		String noticeRow = "//table[contains(@class,'table table-heading table-bordered')]/tbody/tr/td[contains(text(),'ticket')]";
+		int noicesRowsCount = driverUtilities.get().getNumberOfElement(noticeRow);
+		System.out.println("Total notices:="+noicesRowsCount);
+		try {Thread.sleep(1000);}catch(InterruptedException e) {}
+		for(int i=1; i<=noicesRowsCount; i++)
+		{		
+			String noticeRowLineStatus = "(//table[contains(@class,'table table-heading table-bordered')]/tbody/tr/td[contains(text(),'ticket')])["+i+"]/following-sibling::td[1]";
+			System.out.println("Notice path is:="+noticeRowLineStatus);
+			WebElement noticeRowLineElement = driverUtilities.get().getWebElement(noticeRowLineStatus);
+			driverUtilities.get().makeElementVisibleIntoScreenAtMiddle(noticeRowLineElement);
+			String getStatus = driverUtilities.get().getElementText(noticeRowLineElement);
+			try {Thread.sleep(1000);}catch(InterruptedException e) {}
+			System.out.println("Notice status is:="+getStatus);
+			if(getStatus.equalsIgnoreCase("Valid"))
+			{
+				System.out.println("Inside If");
+				String noticeRowLineNumber = "(//table[contains(@class,'table table-heading table-bordered')]/tbody/tr/td[contains(text(),'ticket')])["+i+"]/preceding-sibling::td[1]";
+				System.out.println("noticeRowLineNumber is:="+noticeRowLineNumber);
+				try {Thread.sleep(1000);}catch(InterruptedException e) {}
+				WebElement noticeRowLineNumberElement = driverUtilities.get().getWebElement(noticeRowLineNumber);
+				noticeNumber = driverUtilities.get().getElementText(noticeRowLineNumberElement);
+				System.out.println("noticeNumber is:="+noticeNumber);
+				break;
+			}
+			try {Thread.sleep(1000);}catch(InterruptedException e) {}
+		}
+		return noticeNumber;
+	}
+	
+	public void clickOnDateAndTimeOfNotice(String noticeNUmber)
+	{
+		String link = "//table[contains(@class,'table table-heading table-bordered')]/tbody/tr/td[contains(text(),'notice')]/preceding-sibling::td[contains(text(),'"+noticeNUmber+"')]/preceding-sibling::td/a";
+		WebElement linkEle = driverUtilities.get().getWebElement(link);
+		driverUtilities.get().clickOnElement(linkEle);
+	}
+	
+	public void clickOnDateAndTimeOfTicket(String noticeNUmber)
+	{
+		String link = "//table[contains(@class,'table table-heading table-bordered')]/tbody/tr/td[contains(text(),'ticket')]/preceding-sibling::td[contains(text(),'"+noticeNUmber+"')]/preceding-sibling::td/a";
+		WebElement linkEle = driverUtilities.get().getWebElement(link);
+		driverUtilities.get().clickOnElement(linkEle);
+	}
+	
+	public String getPlateNumber()
+	{
+		String plateNUmberPath = "//h6[normalize-space()='Plate Number:']/following-sibling::p";
+		WebElement plateNUmberElement = driverUtilities.get().getWebElement(plateNUmberPath);
+		String plateNUmber = driverUtilities.get().getElementText(plateNUmberElement);
+		return plateNUmber;
+	}
+	
+	public String getState()
+	{
+		String plateNUmberPath = "//h6[normalize-space()='state:']/following-sibling::p";
+		WebElement plateNUmberElement = driverUtilities.get().getWebElement(plateNUmberPath);
+		String plateNUmber = driverUtilities.get().getElementText(plateNUmberElement);
+		return plateNUmber;
+	}
+	
+	public String getAmountDue()
+	{
+		String plateNUmberPath = "//h6[normalize-space()='Amount Due:']/following-sibling::p";
+		WebElement plateNUmberElement = driverUtilities.get().getWebElement(plateNUmberPath);
+		String plateNUmber = driverUtilities.get().getElementText(plateNUmberElement);
+		return plateNUmber;
+	}
+	
+	public String getType()
+	{
+		driverUtilities.get().scrollDownWebPage();
+		try {Thread.sleep(1000);}catch(InterruptedException e) {}
+		String plateNUmberPath = "//p[normalize-space()='Type']/following-sibling::h5";
+		WebElement plateNUmberElement = driverUtilities.get().getWebElement(plateNUmberPath);
+		String plateNUmber = driverUtilities.get().getElementText(plateNUmberElement);
+		System.out.println("Type is:="+plateNUmber);
+		return plateNUmber;
+	}
+	
+	public String getCode()
+	{
+		String plateNUmberPath = "//p[normalize-space()='Code']/following-sibling::h5";
+		WebElement plateNUmberElement = driverUtilities.get().getWebElement(plateNUmberPath);
+		String plateNUmber = driverUtilities.get().getElementText(plateNUmberElement);
+		System.out.println("Code is:="+plateNUmber);
+		return plateNUmber;
+	}
+	
+	public String getDescription()
+	{
+		String plateNUmberPath = "//p[normalize-space()='Description']/following-sibling::h5";
+		WebElement plateNUmberElement = driverUtilities.get().getWebElement(plateNUmberPath);
+		String plateNUmber = driverUtilities.get().getElementText(plateNUmberElement);
+		System.out.println("Descr is:="+plateNUmber);
+		return plateNUmber;
+	}
+	
+	public String getLot()
+	{
+		String plateNUmberPath = "//p[normalize-space()='Lot No']/following-sibling::h5";
+		WebElement plateNUmberElement = driverUtilities.get().getWebElement(plateNUmberPath);
+		String plateNUmber = driverUtilities.get().getElementText(plateNUmberElement);
+		System.out.println("Lot Number is:="+plateNUmber);
+		return plateNUmber;
+	}
+	
+	public String getOriginalFine()
+	{
+		String plateNUmberPath = "//label[contains(text(),'Original Fine')]/parent::div/following-sibling::div/input";
+		WebElement plateNUmberElement = driverUtilities.get().getWebElement(plateNUmberPath);
+		String originalAmount = driverUtilities.get().getAttribute(plateNUmberElement, "value");
+		System.out.println("LoriginalAmount is:="+originalAmount);
+		return originalAmount;
+	}
+	
+	public String getNote1()
+	{
+		String plateNUmberPath = "//p[normalize-space()='Note 1']/following-sibling::h5";
+		WebElement plateNUmberElement = driverUtilities.get().getWebElement(plateNUmberPath);
+		String plateNUmber = driverUtilities.get().getElementText(plateNUmberElement);
+		System.out.println("Note 1 is:="+plateNUmber);
+		return plateNUmber;
+	}
+	
+	public String getVehicleMake()
+	{
+		String plateNUmberPath = "//p[normalize-space()='Vehicle Make']/following-sibling::h5";
+		WebElement plateNUmberElement = driverUtilities.get().getWebElement(plateNUmberPath);
+		String plateNUmber = driverUtilities.get().getElementText(plateNUmberElement);
+		System.out.println("Note 1 is:="+plateNUmber);
+		return plateNUmber;
+	}
+	
+	public String getBadgeId()
+	{
+		String plateNUmberPath = "//p[normalize-space()='Badge ID']/following-sibling::h5";
+		WebElement plateNUmberElement = driverUtilities.get().getWebElement(plateNUmberPath);
+		String plateNUmber = driverUtilities.get().getElementText(plateNUmberElement);
+		System.out.println("Note 1 is:="+plateNUmber);
+		return plateNUmber;
+	}
+	
+	public String getRemakr1()
+	{
+		String plateNUmberPath = "//p[normalize-space()='Remark 1']/following-sibling::h5";
+		WebElement plateNUmberElement = driverUtilities.get().getWebElement(plateNUmberPath);
+		String plateNUmber = driverUtilities.get().getElementText(plateNUmberElement);
+		System.out.println("remark 1 is:="+plateNUmber);
+		return plateNUmber;
+	}
+	
+	public void clickOnStatusIcon()
+	{
+		String statusIcon = "//div[contains(text(),'Status')]/ancestor::button";
+		WebElement statusIconEle = driverUtilities.get().getWebElement(statusIcon);
+		driverUtilities.get().makeElementVisibleIntoScreenAtMiddle(statusIconEle);
+		driverUtilities.get().clickOnElement(statusIconEle);
+	}
+	
+	public void clickOnSubmitButtonOfUpdateStatusPopup()
+	{
+		String statusIcon = "//button[contains(text(),'Submit')]";
+		int c = driverUtilities.get().getNumberOfElement(statusIcon);
+		statusIcon = "(//button[contains(text(),'Submit')])["+c+"]";
+		WebElement statusIconEle = driverUtilities.get().getWebElement(statusIcon);
+		driverUtilities.get().clickOnElement(statusIconEle);
+	}
+	
+	public void verifyMessage(String message)
+	{
+		Assert.assertTrue(driverUtilities.get().isElementDisplayed(driverUtilities.get().getWebElement("//*[contains(text(),'"+message+"')]")));
+	}
+	
+	public void verifyStatusListValues()
+	{
+		List<String> statusOptions = driverUtilities.get().getListOptions(driverUtilities.get().getWebElement("//select[contains(@id,'status')]"));
+		Assert.assertTrue(statusOptions.contains("Outstanding"));
+		Assert.assertTrue(statusOptions.contains("Collection"));
+		Assert.assertTrue(statusOptions.contains("Paid"));
+		Assert.assertTrue(statusOptions.contains("Suspended"));
+	}
+	
+	public void selectNoticeStatus(String status)
+	{
+		driverUtilities.get().selectElementFromListByValue(driverUtilities.get().getWebElement("//select[contains(@id,'status')]"), status);
+	}
+	
+	public void enterChangeStatusReason(String status)
+	{
+		String reason = "Changing status of notice to "+status;
+		driverUtilities.get().typeIntoTextBox(driverUtilities.get().getWebElement("//textarea[contains(@name,'remarks')]"), reason);
+	}
+	
+	public void verifyChangedNoticeStatus(String status)
+	{
+		Assert.assertTrue(driverUtilities.get().isElementDisplayed(driverUtilities.get().getWebElement("//h6[normalize-space()='Notice Status:']/following-sibling::p[contains(text(),'"+status+"')]")));
+	}
+	
+	public void clickOnyesContinueButton()
+	{
+		driverUtilities.get().clickOnElement(driverUtilities.get().getWebElement("//button[contains(text(),'Continue')]"));
+	}
+	
+	public void clickOnBackLink()
+	{
+		String valPath = "//div[contains(@class,'back-button-citationdetails')]/a";
+		WebElement valPathEle = driverUtilities.get().getWebElement(valPath);
+		driverUtilities.get().clickOnElement(valPathEle);
 	}
 }

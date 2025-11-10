@@ -16,6 +16,9 @@ public class HomePage extends BasePage
 	@FindBy(how=How.XPATH, using="//ul[@id='menuitemsgrp']//ul[contains(@id,'ticketmanagement')]/ancestor::li")
 	public WebElement ticketManagementMenu;
 	
+	@FindBy(how=How.XPATH, using="//ul[@id='menuitemsgrp']//ul[contains(@id,'ticketmanagement')]/ancestor::li")
+	public WebElement noticeManagementMenu;
+	
 	@FindBy(how=How.XPATH, using="//ul[@id='menuitemsgrp']//ul[contains(@id,'appealmanagement')]/ancestor::li")
 	public WebElement appealManagementMenu;
 	
@@ -48,6 +51,13 @@ public class HomePage extends BasePage
 	public WebElement configurePermitTitle;
 	
 	public void extendsTicketManagement()
+	{
+		try {driverUtilities.get().waitForElementToBePresent(ticketManagementMenu);}catch(TimeoutException e) {}
+		driverUtilities.get().clickOnElement(ticketManagementMenu);
+		try {Thread.sleep(1000);}catch(InterruptedException e) {}
+	}
+	
+	public void extendsNoticeManagement()
 	{
 		try {driverUtilities.get().waitForElementToBePresent(ticketManagementMenu);}catch(TimeoutException e) {}
 		driverUtilities.get().clickOnElement(ticketManagementMenu);

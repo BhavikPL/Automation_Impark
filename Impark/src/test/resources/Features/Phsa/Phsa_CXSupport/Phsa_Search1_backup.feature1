@@ -1,6 +1,4 @@
-@Demo
-@Phsa
-@PhsaSearch1
+
 Feature: Verify search ticket functionality
 
 @datasetup
@@ -11,10 +9,37 @@ And user do login to processing pro application with valid credentials
 And user enters otp into OTP Verification page
 Then verify that login successfull
 When user wait for "2" seconds
+#And user extends manual tickets menu
 And user extends notice management menu
 And user wait for "1" seconds
+#And user clicks on to the create ticket option
 And user clicks on to the notice list view option
-And user wait for "20" seconds
+And user wait for "10" seconds
+
+##Scenario: create a citation
+##When user enters citation number and save its value as "search_number" into temp file
+##And user selects today date for issue date
+##And user enters officer name into officer field and save its value as "search_officer" into temp file
+##And verify badge id from the badge id list and save its value as "search_badge" into temp file
+##And user wait for "1" seconds
+##And user enters plate number and save its value as "search_plate" into temp file
+##And user enters state name into state field and save its value as "search_state" into temp file
+##And user enters veh make into veh make field and save its value as "search_vehmake" into temp file
+##And user enters veh model into veh model field and save its value as "search_vehmodel" into temp file
+##And user enters street into street field and save its value as "search_street" into temp file
+##And user enters lot into lot field and save its value as "search_lot" and "search_block" and "search_street" into temp file
+##And user select vio code from the vio code list and save its value as "search_viocode" into temp file
+##And user select vio description from the vio code list and save its value as "search_vioDesc" into temp file
+##Then verify description from the description list and save its value as "search_description" into temp file
+##And verify the fine and save its value as "search_fine" into temp file
+##And verify the paid after and save its value as "search_paidafter" into temp file
+##And user enters block into block field and save its value as "search_block" into temp file
+##And user clicks on upload image button and upload "jpg" file
+##And user wait for "10" seconds
+##And user clicks on submit button to create ticket
+##Then verify the successfully ticket creation message
+##When user clicks on to the okay button of message
+##When user wait for "2" seconds
 
 Scenario: search for Notice in valid status
 And user search for notice which has valid status and save its value as "search_number" into temp file
@@ -28,8 +53,7 @@ And user get the lot and save its value as "search_lot" into temp file
 And user get the code and save its value as "search_vioCode" into temp file
 And user get the description and save its value as "search_vioDescription" into temp file
 ##And user get the type and save its value as "search_vioType" into temp file
-And user get note1 and save its value as "patroller_Public_Notes" into temp file
-And user get vehicle make and save its value as "search_vehicle_make" into temp file
+And user get the note1 and save its value as "patroller_Public_Notes" into temp file
 When user navigate to "Financial" tab name and "#commercial" href link
 And user wait for "4" seconds
 And user get the original fine from financial page and save its value as "search_originalFine" into temp file
@@ -110,15 +134,15 @@ Scenario: verify view details page
 When user click on to the view details link of "search_number" citation number ticket
 And user wait for "2" seconds
 ##Then verify section "Officer Details" for "Officer Name" and "search_officer" as key its value
-Then verify section "Vehicle Details" for "Vehicle Make" and "search_vehicle_make" as key its value
+Then verify section "Vehicle Details" for "Vehicle Make" and "search_vehmake" as key its value
 ##Then verify section "Vehicle Details" for "Vehicle Model" and "search_vehmodel" as key its value
 Then verify section "Vehicle Details" for "Licence Plate Number" and "search_plate" as key its value
 ##Then verify section "Location Details" for "Street" and "search_street" as key its value
 ##Then verify section "Location Details" for "Block" and "search_block" as key its value
 Then verify section "Violation Details" for "Description" and "search_vioDescription" as key its value
 Then verify section "Violation Details" for "Code" and "search_vioCode" as key its value
-Then verify section "Patroller Memo" for "Public Notes" and "patroller_Public_Notes" as key its value
 #Then verify section "Enforcement Notes" for "Printed Remark 1" and "search_remark" as key its value
+Then verify section "Violation Details" for "Description" and "search_vioDesc" as key its value
 #Then verify total "1" images is under "Images" label
 
 Scenario: verify financial page
@@ -127,6 +151,72 @@ And user wait for "4" seconds
 Then verify that "Original Fine" filed has "search_originalFine" key as value from financial page
 Then verify that "Total Due" filed has "search_amount_due" key as value from financial page
 Then verify that "Service Fee" is same as configured service charge amount from financial page
+
+Scenario: Make the citation void and verify
+When user clicks search link from search result page
+And user wait for "2" seconds
+And user enters notice number by taking its value from temp file with key "search_number"
+And user clicks on search button
+And user wait for "5" seconds
+
+When user click on to the "Void" link of "search_number" citation number ticket
+And user wait for "5" seconds
+Then verify cancel citation form with "search_number" key as citation number
+When user select cancel citation reason and save its value as "search_cancel_reason" into temp file
+And user wait for "3" seconds
+When user get cancel citation comments and save its value as "search_cancel_comment" into temp file
+And user wait for "2" seconds
+And user clicks on choose file button and upload "pdf" file for void
+And user wait for "4" seconds
+Then verify that file uploaded into void section
+And user clicks on to the sumbit button of cancel citation popup
+And user wait for "2" seconds
+Then verify that notice with "Cancelled" citation status has been searched successfully
+Then verify that for "Void" link of "search_number" citation number ticket is not visible after void
+Then verify that for "Pay" link of "search_number" citation number ticket is not visible after void
+Then verify that notice with "search_number" citation number has view Details
+Then verify that "Support Note" link is present in search result
+
+Scenario: Add support note to the citation and verify
+When user click on to the "Support Note" link of "search_number" citation number ticket
+And user wait for "2" seconds
+When user clicks on to the submit button of note popup
+Then verify that the validation message for note field
+When user wait for "2" seconds
+And user enters note and save its value as "search_note" into temp file
+And user clicks on choose file button and upload "pdf" file for note
+And user wait for "4" seconds
+Then verify that file uploaded into note section
+When user clicks on to the submit button of note popup
+Then verify note added sucess message
+And user wait for "5" seconds
+And user click on to the "Support Note" link of "search_number" citation number ticket
+And user click on to the View all support notes link from support note popup
+And user wait for "1" seconds
+Then verify that "search_note" note appears under citation info page
+And verify download link for "search_note" note appears under citation info page
+When user close the popup
+
+Scenario: verify audit trail for citation events making citation void and support note added
+When user click on to the view details link of "search_number" citation number ticket
+And user wait for "2" seconds
+And user navigate to "Audit Trail" tab name and "#audit-trail" href link
+And user wait for "4" seconds
+Then verify that audit "Old Value: Valid" visible
+Then verify that audit "New Value: Suspended" visible
+Then verify that audit "Reason: citation note added" visible
+
+Scenario: verify the view details for support note details
+When user navigate to "Notice Info" tab name and "#citation-info" href link
+And user wait for "4" seconds
+Then verify that "search_note" note appears under notice info page from view details
+Then verify download link for "search_note" note appears under notice info page from view details
+Then verify that support notes section for "search_note" has user name same as logged user name info page from view details
+
+Scenario: verify the view details for void details
+Then verify section "Void Details" for "Notice void comments" and "search_cancel_comment" as key its value
+Then verify section "Void Details" for "Void Reason" and "search_cancel_reason" as key its value
+Then verify that void details has user name same as logged user name info page from view details
 
 Scenario: Close the browser
 When user close browser

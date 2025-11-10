@@ -1,7 +1,4 @@
 #Author: Bhavik Chondager
-@Demo
-@Phsa_Manual_Tickets
-
 Feature: Verify functionality of manual ticket section
 
 @datasetup

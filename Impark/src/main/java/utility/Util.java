@@ -311,5 +311,7 @@ public class Util
 		System.out.println(Util.getCurrentSystemDate("MM"));
 		
 		System.out.println(Util.convertMonthNameToNumber("August"));
+		
+		System.out.println(Util.getCurrentSystemDate("MM/dd/yyyy"));
 	}
 }

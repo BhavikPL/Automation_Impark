@@ -487,4 +487,10 @@ public class PaymentSearchPageSteps  extends Base
 	{
 		CurrentPage.getInstance(PaymentSearchPage.class).clickSubmitButtonFromAddDiscountPopup();
 	}
+	
+	@Then("verify that notice with {string} citation status has been searched successfully from payment portal")
+	public void verify_that_notice_with_citation_status_has_been_searched_successfully(String status)
+	{
+		CurrentPage.getInstance(PaymentSearchPage.class).verifyCitationStatus(status);
+	}
 }

@@ -36,6 +36,12 @@ public class ManualTicketsPageSteps extends Base
 		CurrentPage.getInstance(ManualTicketsPage.class).clickOnCreateTicketOption();
 	}
 	
+	@When("user clicks on to the notice list view option")
+	public void user_clicks_on_to_the_notice_list_view_option()
+	{
+		CurrentPage.getInstance(ManualTicketsPage.class).clickOnNoticeListViewOption();
+	}
+	
 	@When("user enters citation number and save its value as {string} into temp file")
 	public void user_enters_citation_number_and_save_its_value_as_into_temp_file(String saveAs) throws IOException
 	{

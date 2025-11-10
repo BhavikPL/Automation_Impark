@@ -1,8 +1,6 @@
-#Author: Bhavik Chondager
-@Demo
-@Phsa5
-@PhsaSearch2
-Feature: Two citations and admin adds discount and pay for these two citations
+@Phsa
+@PhsaPayment2
+Feature: Verify search ticket functionality by entering the ticket number, License plate and state
 
 @datasetup
 Scenario: setup for test
@@ -15,7 +13,7 @@ When user wait for "2" seconds
 And user extends notice management menu
 And user wait for "1" seconds
 And user clicks on to the notice list view option
-And user wait for "10" seconds
+And user wait for "20" seconds
 
 Scenario: search for Ticket1 in valid status
 And user search for notice which has valid status and save its value as "search1_number" into temp file
@@ -53,34 +51,23 @@ When user navigate to "Financial" tab name and "#commercial" href link
 And user wait for "10" seconds
 And user get the original fine from financial page and save its value as "search2_originalFine" into temp file
 
-Scenario: Valid Login with Correct Username and Password
-And user opens cx support application
-And user do login to cx support application with valid credentials
-Then verify that user is redirected to OTP verification page
-When user enters otp into OTP Verification page
-And user wait for "2" seconds
-
 Scenario: Search two tickets by entering the citation number seperated by comma
+When user opens payment application
+And user wait for "4" seconds
 When user enters notice number by taking its value from temp file with key "search1_number" and "search2_number"
 And user clicks on search button
 And user wait for "2" seconds
 Then verify that notice with "search1_number" citation number has been searched successfully
 Then verify that notice with "search2_number" citation number has been searched successfully
 
-Scenario: Admin pay for multiple citation at a time
+Scenario: Motorist pay for multiple citation at a time
 When user click on to the "Pay" button from top bar
 And user wait for "5" seconds
-##Then verify that page has "Plate number" label and "search1_plate" as key its value
-##Then verify that page has "Notice number" label and "search1_number" as key its value
-##Then verify that page has "Notice number" label and "search2_number" as key its value
-##Then verify that page has "Payment amount" label and "search1_originalFine" as key its value
-##Then verify that page has "Payment amount" label and "search2_originalFine" as key its value
-##Then verify the payment amount is total of "search1_originalFine" and "search2_originalFine" for "2" tickets from payment page
 When user clicks on to the make payment button
 Then verify the message "Enter card number" visible on make payment screen
 Then verify the message "Enter expiry" visible on make payment screen
 Then verify the message "Enter cvc" visible on make payment screen
-##When user enters "bhavik.chondager@parkloyalty.com" for "Email Address" placeholder for payment
+When user enters "bhavik.chondager@parkloyalty.com" for "Email Address" placeholder for payment
 ##( issue without email payment is not wokring, email is also not mandatory  )
 And user enters card details
 And user clicks on to the make payment button
@@ -96,6 +83,7 @@ And user clicks on search button
 And user wait for "2" seconds
 Then verify that notice with "search1_number" citation number has "Paid" status
 Then verify that notice with "search2_number" citation number has "Paid" status
+
 
 Scenario: Close the browser
 When user close browser

@@ -100,10 +100,10 @@ public class SearchPageSteps extends Base
 		CurrentPage.getInstance(SearchPage.class).verifyNoticeNUmberValue(expectedNoticeNumber);
 	}
 	
-	@Then("verify sitename in the search result")
-	public void verify_sitename_in_the_search_result()
+	@Then("verify sitename {string} in the search result")
+	public void verify_sitename_in_the_search_result(String siteName)
 	{
-		CurrentPage.getInstance(SearchPage.class).verifySiteNameInSearchResult();
+		CurrentPage.getInstance(SearchPage.class).verifySiteNameInSearchResult(siteName);
 	}
 	
 	@Then("verify that total {string} search notices are in result")
@@ -266,14 +266,21 @@ public class SearchPageSteps extends Base
 		CurrentPage.getInstance(SearchPage.class).verifyCancelForm(keyValue);
 	}
 	
-	@When("user select cancel citation reason and save its value as {string} into temp file")
+	@When("user select cancel notice code and save its value as {string} into temp file")
 	public void user_select_cancel_citation_reason(String key) throws IOException
 	{
 		String keyValue =CurrentPage.getInstance(SearchPage.class).selectCancelCitationReason();
 		PropertyUtil.updateIntoProperty(Path.dataProperty, key, keyValue);
 	}
 	
-	@When("user get cancel citation comments and save its value as {string} into temp file")
+	@When("user get cancel notice description and save its value as {string} into temp file")
+	public void user_enters_cancel_notice_description_and_save_its_value_as_into_temp_file(String key) throws IOException
+	{
+		String keyValue =CurrentPage.getInstance(SearchPage.class).cancelNoticeDescription();
+		PropertyUtil.updateIntoProperty(Path.dataProperty, key, keyValue);
+	}
+	
+	@When("user get cancel notice comments and save its value as {string} into temp file")
 	public void user_enters_cancel_citation_comments_and_save_its_value_as_into_temp_file(String key) throws IOException
 	{
 		String keyValue =CurrentPage.getInstance(SearchPage.class).cancelCitationComments();
@@ -594,5 +601,212 @@ public class SearchPageSteps extends Base
 	public void verify_that_void_details_has_user_name_same_as_logged_user_name_info_page_from_view_details() throws IOException
 	{
 		CurrentPage.getInstance(SearchPage.class).verifyVoidDetailsUserNameFromNoticeInfo();
+	}
+	
+	@Then("verify that issue date is of today for notices issues today after search")
+	public void verify_that_issue_date_is_of_today_for_notices_issues_today()
+	{
+		CurrentPage.getInstance(SearchPage.class).verifyVoidDetailsUserNameFromNoticeInfo();
+	}
+	
+	@Then("verify notice branch lot is {string} after search")
+	public void verify_notice_branch_lot_is_after_search(String key) throws IOException
+	{
+		String keyValue = PropertyUtil.getFromTempPropertyFile(Path.dataProperty, key);
+		CurrentPage.getInstance(SearchPage.class).verifyIBranchLot(keyValue);
+	}
+	
+	@Then("verify notice vio code is {string} after search")
+	public void verify_notice_vio_code_is_after_search(String key) throws IOException
+	{
+		String keyValue = PropertyUtil.getFromTempPropertyFile(Path.dataProperty, key);
+		CurrentPage.getInstance(SearchPage.class).verifyVioCode(keyValue);
+	}
+	
+	@Then("verify notice original amount is {string} after search")
+	public void verify_notice_original_amount_is_after_search(String key) throws IOException
+	{
+		String keyValue = PropertyUtil.getFromTempPropertyFile(Path.dataProperty, key);
+		CurrentPage.getInstance(SearchPage.class).verifyOriginalAmount(keyValue);
+	}
+	
+	@Then("verify notice total due is {string} after search")
+	public void verify_notice_total_due_is_after_search(String key) throws IOException
+	{
+		String keyValue = PropertyUtil.getFromTempPropertyFile(Path.dataProperty, key);
+		CurrentPage.getInstance(SearchPage.class).verifyTotalDue(keyValue);
+	}
+	
+	@Then("verify notice type code description is {string} after search")
+	public void verify_notice_type_code_description_is_after_search(String key) throws IOException
+	{
+		String keyValue = PropertyUtil.getFromTempPropertyFile(Path.dataProperty, key);
+		CurrentPage.getInstance(SearchPage.class).verifyTypeCodeDesc(keyValue);
+	}
+	
+	@When("user search for notice which has valid status and save its value as {string} into temp file")
+	public void user_search_for_notice_which_has_valid_status_and_save_its_value_as_into_temp_file(String key) throws IOException
+	{
+		String noticeNumber = CurrentPage.getInstance(SearchPage.class).searchForNoticeInValidState();
+		PropertyUtil.updateIntoProperty(Path.dataProperty, key, noticeNumber);
+	}
+	
+	@When("user search for ticket which has valid status and save its value as {string} into temp file")
+	public void user_search_for_ticket_which_has_valid_status_and_save_its_value_as_into_temp_file(String key) throws IOException
+	{
+		String noticeNumber = CurrentPage.getInstance(SearchPage.class).searchForTicketInValidState();
+		PropertyUtil.updateIntoProperty(Path.dataProperty, key, noticeNumber);
+	}
+	
+	@When("user click on date time link of {string} notice")
+	public void user_click_on_date_time_link_of_notice(String key) throws IOException
+	{
+		String noticeNumber = PropertyUtil.getFromTempPropertyFile(Path.dataProperty, key);
+		CurrentPage.getInstance(SearchPage.class).clickOnDateAndTimeOfNotice(noticeNumber);
+	}
+	
+	@When("user click on date time link of {string} ticket")
+	public void user_click_on_date_time_link_of_ticket(String key) throws IOException
+	{
+		String noticeNumber = PropertyUtil.getFromTempPropertyFile(Path.dataProperty, key);
+		CurrentPage.getInstance(SearchPage.class).clickOnDateAndTimeOfTicket(noticeNumber);
+	}
+	
+	@When("user get the plate number and save its value as {string} into temp file")
+	public void user_get_the_plate_number_and_save_its_value_as_into_temp_file(String key) throws IOException
+	{
+		String plateNUmber = CurrentPage.getInstance(SearchPage.class).getPlateNumber();
+		PropertyUtil.updateIntoProperty(Path.dataProperty, key, plateNUmber);
+	}
+	
+	@When("user get the state and save its value as {string} into temp file")
+	public void user_get_the_state_and_save_its_value_as_into_temp_file(String key) throws IOException
+	{
+		String plateNUmber = CurrentPage.getInstance(SearchPage.class).getState();
+		PropertyUtil.updateIntoProperty(Path.dataProperty, key, plateNUmber);
+	}
+	
+	@When("user get the amount due and save its value as {string} into temp file")
+	public void user_get_the_amount_due_and_save_its_value_as_into_temp_file(String key) throws IOException
+	{
+		String amoutDue = CurrentPage.getInstance(SearchPage.class).getAmountDue();
+		PropertyUtil.updateIntoProperty(Path.dataProperty, key, amoutDue);
+	}
+	
+	@When("user get the type and save its value as {string} into temp file")
+	public void user_get_the_type_and_save_its_value_as_into_temp_file(String key) throws IOException
+	{
+		String typeCode = CurrentPage.getInstance(SearchPage.class).getType();
+		PropertyUtil.updateIntoProperty(Path.dataProperty, key, typeCode);
+	}
+	
+	@When("user get the code and save its value as {string} into temp file")
+	public void user_get_the_code_and_save_its_value_as_into_temp_file(String key) throws IOException
+	{
+		String typeCode = CurrentPage.getInstance(SearchPage.class).getCode();
+		PropertyUtil.updateIntoProperty(Path.dataProperty, key, typeCode);
+	}
+	
+	@When("user get the description and save its value as {string} into temp file")
+	public void user_get_the_description_and_save_its_value_as_into_temp_file(String key) throws IOException
+	{
+		String typeCode = CurrentPage.getInstance(SearchPage.class).getDescription();
+		PropertyUtil.updateIntoProperty(Path.dataProperty, key, typeCode);
+	}
+	
+	@When("user get the lot and save its value as {string} into temp file")
+	public void user_get_the_lot_and_save_its_value_as_into_temp_file(String key) throws IOException
+	{
+		String typeCode = CurrentPage.getInstance(SearchPage.class).getLot();
+		PropertyUtil.updateIntoProperty(Path.dataProperty, key, typeCode);
+	}
+	
+	@When("user get the original fine from financial page and save its value as {string} into temp file")
+	public void user_get_the_original_fine_from_financial_page_and_save_its_value_as_into_temp_file(String key) throws IOException
+	{
+		String originalAmount = CurrentPage.getInstance(SearchPage.class).getOriginalFine();
+		PropertyUtil.updateIntoProperty(Path.dataProperty, key, originalAmount);
+	}
+	
+	@When("user get note1 and save its value as {string} into temp file")
+	public void user_get_note1_and_save_its_value_as_into_temp_file(String key) throws IOException
+	{
+		String typeCode = CurrentPage.getInstance(SearchPage.class).getNote1();
+		PropertyUtil.updateIntoProperty(Path.dataProperty, key, typeCode);
+	}
+	
+	@When("user get vehicle make and save its value as {string} into temp file")
+	public void user_get_vehicle_make_and_save_its_value_as_into_temp_file(String key) throws IOException
+	{
+		String typeCode = CurrentPage.getInstance(SearchPage.class).getVehicleMake();
+		PropertyUtil.updateIntoProperty(Path.dataProperty, key, typeCode);
+	}
+	
+	@When("user get badgeId and save its value as {string} into temp file")
+	public void user_get_badgeId_and_save_its_value_as_into_temp_file(String key) throws IOException
+	{
+		String typeCode = CurrentPage.getInstance(SearchPage.class).getBadgeId();
+		PropertyUtil.updateIntoProperty(Path.dataProperty, key, typeCode);
+	}
+	
+	@When("user get remark1 and save its value as {string} into temp file")
+	public void user_get_remark1_and_save_its_value_as_into_temp_file(String key) throws IOException
+	{
+		String typeCode = CurrentPage.getInstance(SearchPage.class).getRemakr1();
+		PropertyUtil.updateIntoProperty(Path.dataProperty, key, typeCode);
+	}
+	
+	@When("user click on to the status icon")
+	public void user_click_on_to_the_status_icon()
+	{
+		CurrentPage.getInstance(SearchPage.class).clickOnStatusIcon();
+	}
+	
+	@When("user click on to the submit button of update status popup")
+	public void user_click_on_to_the_submit_button_of_update_status_popup()
+	{
+		CurrentPage.getInstance(SearchPage.class).clickOnSubmitButtonOfUpdateStatusPopup();
+	}
+	
+	@Then("verify the {string} validation message")
+	public void verify_the_validation_message(String message)
+	{
+		CurrentPage.getInstance(SearchPage.class).verifyMessage(message);
+	}
+	
+	@Then("verify the listed values of status list")
+	public void verify_the_listed_values_of_status_list()
+	{
+		CurrentPage.getInstance(SearchPage.class).verifyStatusListValues();
+	}
+	
+	@When("user select the status {string} from status list from update status popup")
+	public void user_select_the_status_from_status_list_from_update_status_popup(String status)
+	{
+		CurrentPage.getInstance(SearchPage.class).selectNoticeStatus(status);
+	}
+	
+	@When("user enters remark for changing status for {string} status")
+	public void user_enters_remark_for_changing_status(String status)
+	{
+		CurrentPage.getInstance(SearchPage.class).enterChangeStatusReason(status);
+	}
+	
+	@Then("verify that notice status is changing to {string}")
+	public void verify_the_notice_status_is_changing(String status)
+	{
+		CurrentPage.getInstance(SearchPage.class).verifyChangedNoticeStatus(status);
+	}
+	
+	@When("user click on to the yes continue button of popup")
+	public void user_click_on_to_the_yes_continue_button_of_popup()
+	{
+		CurrentPage.getInstance(SearchPage.class).clickOnyesContinueButton();
+	}
+	
+	@When("user clicks on to the back link")
+	public void user_clicks_on_to_the_back_link()
+	{
+		CurrentPage.getInstance(SearchPage.class).clickOnBackLink();
 	}
 }
