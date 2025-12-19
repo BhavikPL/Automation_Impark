@@ -25,7 +25,7 @@ And user get the plate number and save its value as "search1_plate" into temp fi
 And user get the state and save its value as "search1_state" into temp file
 And user get the amount due and save its value as "search1_amount_due" into temp file
 And user wait for "2" seconds
-And user get the lot and save its value as "search1_lot" into temp file
+##And user get the lot and save its value as "search1_lot" into temp file
 And user get the code and save its value as "search1_vioCode" into temp file
 And user get the description and save its value as "search1_vioDescription" into temp file
 And user get note1 and save its value as "patroller1_Public_Notes" into temp file
@@ -35,6 +35,8 @@ And user wait for "10" seconds
 And user get the original fine from financial page and save its value as "search1_originalFine" into temp file
 And user clicks on to the back link
 And user wait for "15" seconds
+And user refresh browser
+And user wait for "4" seconds
 
 Scenario: search for Ticket2 in valid status
 And user search for ticket which has valid status and save its value as "search2_number" into temp file

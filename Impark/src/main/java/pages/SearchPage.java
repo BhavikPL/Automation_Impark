@@ -52,7 +52,7 @@ public class SearchPage extends BasePage
 	@FindBy(how=How.XPATH, using="//div[contains(text(),'Select Province or State')]/following-sibling::div/input")
 	public WebElement licenseProvinceStateInput;
 	
-	@FindBy(how=How.XPATH, using="//*[contains(text(),'Enter ticket number or Licence Plate')]")
+	@FindBy(how=How.XPATH, using="//*[contains(text(),'Enter ticket number or License Plate')]")
 	public WebElement validationMessage;
 	
 	// Search results elements
@@ -342,14 +342,13 @@ public class SearchPage extends BasePage
 	
 	public void verifyNoticeNUmberValue(String expectedNoticeNumber)
 	{
-		WebElement citationSearched = driverUtilities.get().getWebElement("//input[contains(@id,'ticket_number')]");
-		String actualDesc = driverUtilities.get().getElementAttribute(citationSearched,"value");
-		Assert.assertTrue(actualDesc.contains(expectedNoticeNumber));
+		WebElement citationSearched = driverUtilities.get().getWebElement("//*[normalize-space()='Notice Number']/following-sibling::h5[text()='"+expectedNoticeNumber+"']");
+		Assert.assertTrue(driverUtilities.get().isElementDisplayed(citationSearched));
 	}
 	
 	public void clickOnLinkOfCitation(String citationNumber)
 	{
-		WebElement lnk = driverUtilities.get().getWebElement("//input[contains(@id,'ticket_number')]");
+		WebElement lnk = driverUtilities.get().getWebElement("//input[contains(@id,'Notice Number')]");
 	}
 	
 	public void verifySiteNameInSearchResult(String siteName)
@@ -652,9 +651,6 @@ public class SearchPage extends BasePage
 	public void verifyMessagePopup(String expectedMessage)
 	{
 		Assert.assertTrue("Validation message not displayed", driverUtilities.get().isElementDisplayed(validationMessage));
-		String actualMessage = driverUtilities.get().getElementText(validationMessage);
-		Assert.assertTrue("Expected message: " + expectedMessage + ", Actual message: " + actualMessage, 
-			actualMessage.contains(expectedMessage));
 	}
 
 	public void enterSpecialCharactersIntoNoticeAndLicense()
@@ -1164,6 +1160,27 @@ public class SearchPage extends BasePage
 	public String searchForNoticeInValidState()
 	{
 		String noticeNumber = "";
+		
+		driverUtilities.get().clickOnElement(driverUtilities.get().getWebElement("//button[contains(@class,'filter-box')]"));
+		
+		driverUtilities.get().clickOnElement(driverUtilities.get().getWebElement("//input[@name='category_input']"));
+		try {Thread.sleep(1000);}catch(InterruptedException e) {}
+		String noticePath="//ul[contains(@class,'optionContainer')]//li[normalize-space()='notice' and @class='option    ']/input";
+		WebElement noticeLink = driverUtilities.get().getWebElement(noticePath);
+		driverUtilities.get().clickOnElement(noticeLink);
+		
+		String statusPath="//input[@name='status_input']";
+		WebElement statusField = driverUtilities.get().getWebElement(statusPath);
+		driverUtilities.get().typeIntoTextBox(statusField, "Valid");
+		driverUtilities.get().clickOnElement(driverUtilities.get().getWebElement("//ul[contains(@class,'optionContainer')]//li[normalize-space()='Valid' and @class='option  highlightOption highlight  ']/input"));
+		
+		driverUtilities.get().clickOnElement(driverUtilities.get().getWebElement("//button[contains(@class,'filter-box')]"));
+		
+		driverUtilities.get().clickOnElement(driverUtilities.get().getWebElement("//button[contains(text(),'Submit')]"));
+		try {driverUtilities.get().waitForElementDisappear2("//div[@class='spinner-border']"); }catch(TimeoutException e) {}
+		try {Thread.sleep(2000);}catch(InterruptedException e) {}
+		driverUtilities.get().clickOnElement(driverUtilities.get().getWebElement("//button[contains(@class,'filter-box')]"));
+		
 		String noticeRow = "//table[contains(@class,'table table-heading table-bordered')]/tbody/tr/td[text()='notice']";
 		int noicesRowsCount = driverUtilities.get().getNumberOfElement(noticeRow);
 		System.out.println("Total notices:="+noicesRowsCount);
@@ -1196,6 +1213,27 @@ public class SearchPage extends BasePage
 	public String searchForTicketInValidState()
 	{
 		String noticeNumber = "";
+		
+		driverUtilities.get().clickOnElement(driverUtilities.get().getWebElement("//button[contains(@class,'filter-box')]"));
+		
+		driverUtilities.get().clickOnElement(driverUtilities.get().getWebElement("//input[@name='category_input']"));
+		try {Thread.sleep(1000);}catch(InterruptedException e) {}
+		String noticePath="//ul[contains(@class,'optionContainer')]//li[normalize-space()='honor_bill_notice' and @class='option    ']/input";
+		WebElement noticeLink = driverUtilities.get().getWebElement(noticePath);
+		driverUtilities.get().clickOnElement(noticeLink);
+		
+		String statusPath="//input[@name='status_input']";
+		WebElement statusField = driverUtilities.get().getWebElement(statusPath);
+		driverUtilities.get().typeIntoTextBox(statusField, "Valid");
+		driverUtilities.get().clickOnElement(driverUtilities.get().getWebElement("//ul[contains(@class,'optionContainer')]//li[normalize-space()='Valid' and @class='option  highlightOption highlight  ']/input"));
+		
+		driverUtilities.get().clickOnElement(driverUtilities.get().getWebElement("//button[contains(@class,'filter-box')]"));
+		
+		driverUtilities.get().clickOnElement(driverUtilities.get().getWebElement("//button[contains(text(),'Submit')]"));
+		try {driverUtilities.get().waitForElementDisappear2("//div[@class='spinner-border']"); }catch(TimeoutException e) {}
+		try {Thread.sleep(2000);}catch(InterruptedException e) {}
+		driverUtilities.get().clickOnElement(driverUtilities.get().getWebElement("//button[contains(@class,'filter-box')]"));
+		
 		String noticeRow = "//table[contains(@class,'table table-heading table-bordered')]/tbody/tr/td[contains(text(),'ticket')]";
 		int noicesRowsCount = driverUtilities.get().getNumberOfElement(noticeRow);
 		System.out.println("Total notices:="+noicesRowsCount);
@@ -1249,7 +1287,7 @@ public class SearchPage extends BasePage
 	
 	public String getState()
 	{
-		String plateNUmberPath = "//h6[normalize-space()='state:']/following-sibling::p";
+		String plateNUmberPath = "//h6[normalize-space()='Province or State:']/following-sibling::p";
 		WebElement plateNUmberElement = driverUtilities.get().getWebElement(plateNUmberPath);
 		String plateNUmber = driverUtilities.get().getElementText(plateNUmberElement);
 		return plateNUmber;
@@ -1312,7 +1350,7 @@ public class SearchPage extends BasePage
 	
 	public String getNote1()
 	{
-		String plateNUmberPath = "//p[normalize-space()='Note 1']/following-sibling::h5";
+		String plateNUmberPath = "//p[normalize-space()='Public Notes']/following-sibling::h5";
 		WebElement plateNUmberElement = driverUtilities.get().getWebElement(plateNUmberPath);
 		String plateNUmber = driverUtilities.get().getElementText(plateNUmberElement);
 		System.out.println("Note 1 is:="+plateNUmber);

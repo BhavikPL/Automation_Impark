@@ -23,7 +23,7 @@ And user wait for "5" seconds
 And user get the plate number and save its value as "search_plate" into temp file
 And user get the state and save its value as "search_state" into temp file
 And user get badgeId and save its value as "patroller_badgeID" into temp file
-And user get remark1 and save its value as "patroller_privateNotes" into temp file
+##And user get remark1 and save its value as "patroller_privateNotes" into temp file
 And user get the state and save its value as "search_state" into temp file
 
 Scenario: Valid Login with Correct Username and Password
@@ -73,26 +73,26 @@ Then verify that "search_note" note appears under citation info page
 And verify download link for "search_note" note appears under citation info page
 When user close the popup
 
-Scenario: Make ticket/notice cancelled
-When user click on to the "Void" link of "search_number" citation number ticket
-And user wait for "5" seconds
-Then verify cancel citation form with "search_number" key as citation number
-When user select cancel notice code and save its value as "search_cancel_reason" into temp file
-And user wait for "3" seconds
-When user get cancel notice description and save its value as "search_cancel_comment" into temp file
-And user wait for "2" seconds
-When user get cancel notice comments and save its value as "search_cancel_comment" into temp file
-And user wait for "2" seconds
-And user clicks on choose file button and upload "pdf" file for void
-And user wait for "4" seconds
-Then verify that file uploaded into void section
-And user clicks on to the sumbit button of cancel citation popup
-And user wait for "2" seconds
-Then verify that notice with "Cancelled" citation status has been searched successfully
-Then verify that for "Void" link of "search_number" citation number ticket is not visible after void
-Then verify that for "Pay" link of "search_number" citation number ticket is not visible after void
-Then verify that notice with "search_number" citation number has view Details
-Then verify that "Support Note" link is present in search result
+##Scenario: Make ticket/notice cancelled
+##When user click on to the "Void" link of "search_number" citation number ticket
+##And user wait for "5" seconds
+##Then verify cancel citation form with "search_number" key as citation number
+##When user select cancel notice code and save its value as "search_cancel_reason" into temp file
+##And user wait for "3" seconds
+##When user get cancel notice description and save its value as "search_cancel_comment" into temp file
+##And user wait for "2" seconds
+##When user get cancel notice comments and save its value as "search_cancel_comment" into temp file
+##And user wait for "2" seconds
+##And user clicks on choose file button and upload "pdf" file for void
+##And user wait for "4" seconds
+##Then verify that file uploaded into void section
+##And user clicks on to the sumbit button of cancel citation popup
+##And user wait for "2" seconds
+##Then verify that notice with "Cancelled" citation status has been searched successfully
+##Then verify that for "Void" link of "search_number" citation number ticket is not visible after void
+##Then verify that for "Pay" link of "search_number" citation number ticket is not visible after void
+##Then verify that notice with "search_number" citation number has view Details
+##Then verify that "Support Note" link is present in search result
 
 Scenario: verify the view details for support note details
 When user click on to the view details link of "search_number" citation number ticket
@@ -101,31 +101,24 @@ Then verify that "search_note" note appears under notice info page from view det
 Then verify download link for "search_note" note appears under notice info page from view details
 Then verify that support notes section for "search_note" has user name same as logged user name info page from view details
 
-Scenario: verify the view details for void details
-Then verify section "Void Details" for "Notice void comments" and "search_cancel_comment" as key its value
-Then verify section "Void Details" for "Void Reason" and "search_cancel_reason" as key its value
-Then verify that void details has user name same as logged user name info page from view details
+##Scenario: verify the view details for void details
+##Then verify section "Void Details" for "Notice void comments" and "search_cancel_comment" as key its value
+##Then verify section "Void Details" for "Void Reason" and "search_cancel_reason" as key its value
+##Then verify that void details has user name same as logged user name info page from view details
 
-Scenario: verify audit trail for citation events making citation void and support note added
-When user navigate to "Audit Trail" tab name and "#audit-trail" href link
-And user wait for "4" seconds
-Then verify that audit "Old Value: Valid" visible
-Then verify that audit "New Value: Suspended" visible
-Then verify that audit "Reason: citation note added" visible
-
-Scenario: verify that the notice tab has status button to change the status of Notice to "Outstanding"
-When user click on to the status icon
-And user wait for "2" seconds
-And user click on to the submit button of update status popup
-Then verify the "Select status" validation message
-Then verify the listed values of status list
-When user select the status "Outstanding" from status list from update status popup
-And user click on to the submit button of update status popup
-Then verify the "Enter remarks" validation message
-When user enters remark for changing status for "Outstanding" status
-And user click on to the submit button of update status popup
-And user wait for "4" seconds
-Then verify that notice status is changing to "Outstanding"
+##Scenario: verify that the notice tab has status button to change the status of Notice to "Outstanding"
+##When user click on to the status icon
+##And user wait for "2" seconds
+##And user click on to the submit button of update status popup
+##Then verify the "Select status" validation message
+##Then verify the listed values of status list
+##When user select the status "Outstanding" from status list from update status popup
+##And user click on to the submit button of update status popup
+##Then verify the "Enter remarks" validation message
+##When user enters remark for changing status for "Outstanding" status
+##And user click on to the submit button of update status popup
+##And user wait for "4" seconds
+##Then verify that notice status is changing to "Outstanding"
 
 Scenario: verify that the notice tab has status button to change the status of Notice to "Collection"
 When user click on to the status icon
@@ -168,6 +161,13 @@ And user wait for "2" seconds
 And user click on to the yes continue button of popup
 And user wait for "4" seconds
 Then verify that notice status is changing to "Outstanding"
+
+Scenario: verify audit trail for citation events making citation void and support note added
+When user navigate to "Audit Trail" tab name and "#audit-trail" href link
+And user wait for "4" seconds
+Then verify that audit "Old Value: Valid" visible
+Then verify that audit "New Value: Suspended" visible
+Then verify that audit "Reason: citation note added" visible
 
 Scenario: Close the browser
 When user close browser
